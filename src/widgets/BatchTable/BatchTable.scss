@@ -1,0 +1,65 @@
+.batchTableWrapper {
+    background:#FFFBF6;
+    border-radius:20px;
+    padding:25px;
+    border:1px solid #F5D9C7;
+    box-shadow:0 15px 40px rgba(74,59,51,.08);
+}
+
+
+table {
+    width:100%;
+    border-collapse:collapse;
+}
+
+
+th {
+    padding:15px;
+    text-align:left;
+    color:#7A665D;
+    font-size:14px;
+}
+
+
+td {
+    padding:15px;
+    border-top:1px solid #F5D9C7;
+    color:#4A3B33;
+}
+
+.edit {
+    margin-right:10px;
+    padding:8px 14px;
+    border:none;
+    border-radius:10px;
+    background:#FFEE9C;
+    color:#5f381e;
+    cursor:pointer;
+
+    &:hover {
+        background:#FFD982;
+    }
+}
+
+
+.status {
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:15px;
+    background:#FFF1D6;
+    color:#B66B00;
+}
+
+
+.delete {
+    padding:8px 14px;
+    border:none;
+    border-radius:10px;
+    background:#FFDEDE;
+    color:#C0392B;
+
+    cursor:pointer;
+    &:hover {
+        background:#FFBABA;
+    }
+}

@@ -1,0 +1,226 @@
+[
+  {
+    "type": "header",
+    "version": "5.2.3",
+    "comment": "Export to JSON plugin for phpMyAdmin"
+  },
+  {
+    "type": "database",
+    "name": "sup_db"
+  },
+  {
+    "type": "table",
+    "name": "batch",
+    "database": "sup_db",
+    "data": [
+      {
+        "id": "12",
+        "name": "Магний бисглицинат",
+        "status": "Ожидание проверки",
+        "recipe_id": null,
+        "quantity_units": "30",
+        "capsules_per_unit": "20",
+        "total_capsules": "600"
+      },
+      {
+        "id": "16",
+        "name": "Ежовика гребенчатого экстракт 1:10",
+        "status": "В работе",
+        "recipe_id": null,
+        "quantity_units": "10",
+        "capsules_per_unit": "15",
+        "total_capsules": "150"
+      }
+    ]
+  },
+  {
+    "type": "table",
+    "name": "ingredient",
+    "database": "sup_db",
+    "data": [
+      {
+        "id": "11",
+        "name": "Магний",
+        "unit": "г",
+        "stock": "6528",
+        "warehouse_id": "1"
+      },
+      {
+        "id": "12",
+        "name": "Железо",
+        "unit": "г",
+        "stock": "3000",
+        "warehouse_id": "1"
+      },
+      {
+        "id": "13",
+        "name": "Ретинол",
+        "unit": "г",
+        "stock": "99",
+        "warehouse_id": "2"
+      },
+      {
+        "id": "14",
+        "name": "Церебролизин",
+        "unit": "г",
+        "stock": "2500",
+        "warehouse_id": "3"
+      },
+      {
+        "id": "21",
+        "name": "Хондроитина сульфат",
+        "unit": "г",
+        "stock": "259",
+        "warehouse_id": "1"
+      },
+      {
+        "id": "22",
+        "name": "Ежовика Гребенчатого порошок",
+        "unit": "г",
+        "stock": "3000",
+        "warehouse_id": "3"
+      },
+      {
+        "id": "23",
+        "name": "Бетаин HCl",
+        "unit": "г",
+        "stock": "5000",
+        "warehouse_id": "2"
+      },
+      {
+        "id": "34",
+        "name": "Цинк ",
+        "unit": "г",
+        "stock": "3000",
+        "warehouse_id": "1"
+      }
+    ]
+  },
+  {
+    "type": "table",
+    "name": "recipe",
+    "database": "sup_db",
+    "data": [
+      {
+        "recipe_id": "1",
+        "name": "Ферромагний"
+      },
+      {
+        "recipe_id": "2",
+        "name": "Ежовик + Магний"
+      },
+      {
+        "recipe_id": "5",
+        "name": "Магний 100 мг"
+      }
+    ]
+  },
+  {
+    "type": "table",
+    "name": "recipe_ingredient",
+    "database": "sup_db",
+    "data": [
+      {
+        "recipe_id": "1",
+        "ingredient_id": "11",
+        "amount_mg": "150"
+      },
+      {
+        "recipe_id": "1",
+        "ingredient_id": "12",
+        "amount_mg": "450"
+      },
+      {
+        "recipe_id": "2",
+        "ingredient_id": "11",
+        "amount_mg": "75"
+      },
+      {
+        "recipe_id": "2",
+        "ingredient_id": "22",
+        "amount_mg": "100"
+      },
+      {
+        "recipe_id": "5",
+        "ingredient_id": "11",
+        "amount_mg": "100"
+      },
+      {
+        "recipe_id": "7",
+        "ingredient_id": "13",
+        "amount_mg": "100"
+      }
+    ]
+  },
+  {
+    "type": "table",
+    "name": "test",
+    "database": "sup_db",
+    "data": [
+      {
+        "test_id": "1",
+        "batch_id": "12",
+        "worker_id": "1",
+        "method_type": "Сверка состава по весу",
+        "test_date": "2026-04-24",
+        "test_result": "Успешно"
+      },
+      {
+        "test_id": "2",
+        "batch_id": "16",
+        "worker_id": "2",
+        "method_type": "Проверка плотности",
+        "test_date": "2026-04-24",
+        "test_result": "Неуспешно"
+      }
+    ]
+  },
+  {
+    "type": "table",
+    "name": "warehouse",
+    "database": "sup_db",
+    "data": [
+      {
+        "warehouse_id": "1",
+        "warehouse_location": "Липецк, ул. Металлургов, 9",
+        "warehouse_volume": "12787",
+        "max_volume": "100000"
+      },
+      {
+        "warehouse_id": "2",
+        "warehouse_location": "Липецк, ул. 9 Мая, 14",
+        "warehouse_volume": "5099",
+        "max_volume": "100000"
+      },
+      {
+        "warehouse_id": "3",
+        "warehouse_location": "Липецк, ул. Студёновская, 132",
+        "warehouse_volume": "5500",
+        "max_volume": "100000"
+      },
+      {
+        "warehouse_id": "5",
+        "warehouse_location": "Липецк, ул. Тестовая, 5",
+        "warehouse_volume": "0",
+        "max_volume": "200"
+      }
+    ]
+  },
+  {
+    "type": "table",
+    "name": "worker",
+    "database": "sup_db",
+    "data": [
+      {
+        "worker_id": "1",
+        "name": "Ганичев Валентин",
+        "worker_role": "Специалист по качеству"
+      },
+      {
+        "worker_id": "2",
+        "name": "Царев Дмитрий",
+        "worker_role": "Оператор производства"
+      }
+    ]
+  }
+]

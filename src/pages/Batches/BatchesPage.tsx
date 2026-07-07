@@ -1,0 +1,116 @@
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import {
+    setBatches,
+    type Batch,
+} from "@entities/batch/models/batchSlice";
+
+
+import CreateBatchForm from "@features/batch/createBatch/CreateBatchForm";
+import EditBatchForm from "@features/batch/editBatch/EditBatchForm";
+
+import { BatchTable } from "@widgets/BatchTable/BatchTable";
+
+import {
+    FontAwesomeIcon,
+    faPlus
+} from "@shared/icons";
+
+import "./BatchesPage.scss";
+
+
+export default function BatchesPage() {
+
+    const dispatch = useDispatch();
+    const [createOpen, setCreateOpen] = useState(false);
+    const [editingBatch, setEditingBatch] = useState<Batch | null>(null);
+
+    useEffect(() => {
+        fetch("/db.json")
+            .then(res => res.json())
+            .then(data => {
+
+                const batches = data.find(
+                    (table: any) => table.name === "batch"
+                ).data;
+
+                dispatch(
+                    setBatches(
+                        batches.map((batch: any) => ({
+                            ...batch,
+                            quantity_units: Number(batch.quantity_units),
+                            capsules_per_unit: Number(batch.capsules_per_unit),
+                            total_capsules: Number(batch.total_capsules),
+                        }))
+                    )
+                );
+            });
+
+    }, [dispatch]);
+
+    return (
+        <div className="batchesPage">
+            <div className="pageHeader">
+                <div>
+                    <h1>
+                        Партии
+                    </h1>
+                    <p>
+                        Управление производственными партиями
+                    </p>
+                </div>
+
+                <button
+                    className="createButton"
+                    onClick={() => setCreateOpen(true)}
+                >
+                    <FontAwesomeIcon icon={faPlus}/>
+                     Создать партию
+                </button>
+
+            </div>
+
+            <BatchTable
+                onEdit={setEditingBatch}
+            />
+
+            {createOpen && (
+                <div className="modalOverlay">
+
+                    <div className="modal">
+
+                        <button
+                            className="closeButton"
+                            onClick={() => setCreateOpen(false)}
+                        >
+                            ×
+                        </button>
+
+                        <CreateBatchForm
+                            onClose={() => setCreateOpen(false)}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {editingBatch && (
+                <div className="modalOverlay">
+                    <div className="modal">
+                        <button
+                            className="closeButton"
+                            onClick={() => setEditingBatch(null)}
+                        >
+                            ×
+                        </button>
+
+                        <EditBatchForm
+                            batch={editingBatch}
+                            onClose={() => setEditingBatch(null)}
+                        />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
