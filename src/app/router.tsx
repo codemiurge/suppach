@@ -1,6 +1,11 @@
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter} from "react-router-dom";
+import MainLayout from "./MainLayout";
+import BatchesPage from "@pages/Batches/BatchesPage";
 
 export const router = createBrowserRouter([{
     path: "/",
-    element: <Outlet />
+    element: <MainLayout />,
+    children:[
+        {index: true, element:<BatchesPage/>}
+    ]
 }])

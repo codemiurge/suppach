@@ -1,36 +1,73 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import {
+    createSlice,
+    type PayloadAction,
+} from "@reduxjs/toolkit";
 
-export type Batch = {
-  id: string;
-  name: string;
-  status: string;
-  recipe_id: string | null;
+export const BATCH_STATUSES = [
+    "Ожидание проверки",
+    "В работе",
+    "Допущена",
+    "Отклонена",
+    "Утилизация",
+] as const;
+
+export type BatchStatus = typeof BATCH_STATUSES[number];
+
+export interface Batch {
+    id: string;
+    name: string;
+    status: BatchStatus;
+    recipe_id: string | null;
+    quantity_units: number;
+    capsules_per_unit: number;
+    total_capsules: number;
+}
+
+interface BatchState {
+    list: Batch[];
+}
+
+const initialState: BatchState = {
+    list: [],
 };
-
-type State = {
-    list: Batch[]
-}
-
-const initialState: State = {
-    list: []
-}
 
 const batchSlice = createSlice({
     name: "batch",
-    initialState: initialState,
-    reducers:{
-        addBatch(state, action: PayloadAction<Batch>){
-            state.list.push(action.payload)
-        },
-        
-        setBatches(state, action: PayloadAction<Batch[]>){
+
+    initialState,
+
+    reducers: {
+        setBatches(state, action: PayloadAction<Batch[]>) {
             state.list = action.payload;
         },
-        updateBatchStatus(state, action: PayloadAction<{id:string, status:string}>){
-            const b = state.list.find((el) => el.id === action.payload.id);
-            if (b) b.status = action.payload.status;
-        },
-    }
-})
 
-export const {addBatch, setBatches, updateBatchStatus} = batchSlice.actions;
+        addBatch(state, action: PayloadAction<Batch>) {
+            state.list.push(action.payload);
+        },
+
+        updateBatch(state, action: PayloadAction<Batch>) {
+            const index = state.list.findIndex(
+                batch => batch.id === action.payload.id
+            );
+
+            if (index !== -1) {
+                state.list[index] = action.payload;
+            }
+        },
+
+        deleteBatch(state, action: PayloadAction<string>) {
+            state.list = state.list.filter(
+                batch => batch.id !== action.payload
+            );
+        },
+    },
+});
+
+export const {
+    setBatches,
+    addBatch,
+    updateBatch,
+    deleteBatch,
+} = batchSlice.actions;
+
+export default batchSlice.reducer;
