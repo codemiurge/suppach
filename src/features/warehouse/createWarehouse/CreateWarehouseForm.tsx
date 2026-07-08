@@ -62,6 +62,7 @@ export default function CreateWarehouseForm({
             <input
                 value={location}
                 placeholder="Например: Липецк, ул. Тестовая, 5"
+                required
                 onChange={
                     e=>setLocation(e.target.value)
                 }
@@ -75,6 +76,7 @@ export default function CreateWarehouseForm({
                 type="number"
                 min={0}
                 value={maxVolume}
+                required
                 onChange={
                     e=>
                     setMaxVolume(

@@ -1,0 +1,86 @@
+.recipeForm{
+    width:430px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+    h2{
+        color:#4A3B33;
+    }
+
+    label{
+        color:#7A665D;
+        font-weight:600;
+    }
+
+    input,
+    select{
+        padding:12px;
+        border-radius:12px;
+        border:1px solid #F5D9C7;
+        background:#FFFBF6;
+        color:#4A3B33;
+    }
+}
+
+
+.ingredientsHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    h3{
+        color:#4A3B33;
+    }
+}
+
+
+.addRow{
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:10px;
+    background:#FF9D5C;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+
+.ingredientRow{
+    display:flex;
+    gap:8px;
+    align-items:center;
+
+    select{
+        flex:1;
+    }
+
+    input{
+        width:90px;
+    }
+}
+
+
+.removeRow{
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:10px;
+    background:#FFDEDE;
+    color:#C0392B;
+    font-size:20px;
+    cursor:pointer;
+}
+
+
+.submitButton{
+    height:44px;
+    margin-top:15px;
+    border:none;
+    border-radius:10px;
+    background:#FF9D5C;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+}

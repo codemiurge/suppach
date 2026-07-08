@@ -74,6 +74,7 @@ export default function EditIngredientForm({
 
             <input
                 value={name}
+                required
                 onChange={e =>
                     setName(e.target.value)
                 }
@@ -86,6 +87,7 @@ export default function EditIngredientForm({
 
             <input
                 value={unit}
+                required
                 onChange={e =>
                     setUnit(e.target.value)
                 }
@@ -99,6 +101,7 @@ export default function EditIngredientForm({
             <input
                 type="number"
                 value={stock}
+                required
                 onChange={e =>
                     setStock(
                         Number(e.target.value)

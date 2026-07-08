@@ -74,6 +74,7 @@ export default function CreateIngredientForm({
                 value={name}
                 placeholder="Например: Магний"
                 onChange={e => setName(e.target.value)}
+                required
             />
 
 
@@ -84,6 +85,7 @@ export default function CreateIngredientForm({
             <input
                 value={unit}
                 onChange={e => setUnit(e.target.value)}
+                required
             />
 
 
@@ -94,6 +96,7 @@ export default function CreateIngredientForm({
             <input
                 type="number"
                 min={0}
+                required
                 value={stock}
                 onChange={e =>
                     setStock(

@@ -5,5 +5,7 @@ export {
     faBox,
     faFlask,
     faPencil,
-    faTrash
+    faTrash,
+    faChevronDown,
+    faChevronRight
 } from "@fortawesome/free-solid-svg-icons";

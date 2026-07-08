@@ -19,12 +19,10 @@ interface Props {
 export default function CreateBatchForm({ onClose }: Props) {
     const dispatch = useDispatch();
 
-
     const [name, setName] = useState("");
     const [status, setStatus] = useState<BatchStatus>("В работе");
     const [quantity, setQuantity] = useState(0);
     const [capsulesPerUnit, setCapsulesPerUnit] = useState(10);
-
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -42,7 +40,6 @@ export default function CreateBatchForm({ onClose }: Props) {
             })
         );
 
-
         setName("");
         setQuantity(0);
         setCapsulesPerUnit(10);
@@ -56,54 +53,38 @@ export default function CreateBatchForm({ onClose }: Props) {
             className="createBatchForm"
             onSubmit={handleSubmit}
         >
-            <h2>
-                Создание партии
-            </h2>
-
-
-            <label>
-                Название партии
-            </label>
-
+            <h2>Создание партии</h2>
+            <label>Название партии</label>
 
             <input
                 value={name}
+                required
                 placeholder="Например: Магний бисглицинат"
                 onChange={e => setName(e.target.value)}
             />
 
-
-            <label>
-                Количество единиц
-            </label>
-
+            <label>Количество единиц</label>
 
             <input
                 type="number"
                 value={quantity}
+                required
                 min={0}
                 onChange={e => setQuantity(Number(e.target.value))}
             />
 
 
-            <label>
-                Капсул в единице
-            </label>
-
+            <label>Капсул в единице</label>
 
             <input
                 type="number"
                 value={capsulesPerUnit}
+                required
                 min={0}
                 onChange={e => setCapsulesPerUnit(Number(e.target.value))}
             />
 
-
-            <label>
-                Статус
-            </label>
-
-
+            <label>Статус</label>
             <select
                 value={status}
                 onChange={e => setStatus(e.target.value as BatchStatus)}
@@ -118,10 +99,7 @@ export default function CreateBatchForm({ onClose }: Props) {
                 ))}
             </select>
 
-
-            <button>
-                Создать партию
-            </button>
+            <button>Создать партию</button>
         </form>
     );
 }

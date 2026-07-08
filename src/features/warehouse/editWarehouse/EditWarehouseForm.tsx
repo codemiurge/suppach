@@ -97,6 +97,7 @@ export default function EditWarehouseForm({
 
             <input
                 value={location}
+                required
                 onChange={
                     e=>setLocation(
                         e.target.value
@@ -110,6 +111,7 @@ export default function EditWarehouseForm({
                 type="number"
                 min={0}
                 value={maxVolume}
+                required
                 onChange={
                     e=>setMaxVolume(
                         Number(e.target.value)

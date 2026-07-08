@@ -50,7 +50,7 @@ export function IngredientTable({
                         </th>
 
                         <th>
-                            Единица
+                            Единица измерения
                         </th>
 
                         <th>

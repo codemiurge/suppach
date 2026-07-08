@@ -1,26 +1,35 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import {useEffect} from "react";
+import {useDispatch} from "react-redux";
 
 import {
     setWarehouses
 } from "@entities/warehouse/models/warehouseSlice";
 
+import {
+    setIngredients
+} from "@entities/ingredient/models/ingredientSlice";
 
-export default function AppInitializer() {
+import {
+    setRecipes
+} from "@entities/recipe/models/recipeSlice";
 
-    const dispatch = useDispatch();
+import {
+    setRecipeIngredients
+} from "@entities/recipe/models/recipeIngredientSlice";
 
 
-    useEffect(() => {
+export default function AppInitializer(){
+    const dispatch=useDispatch();
+    useEffect(()=>{
 
         fetch("/db.json")
-            .then(r => r.json())
-            .then(data => {
+            .then(r=>r.json())
+            .then(data=>{
 
-                const warehouses = data.find(
+
+                const warehouses=data.find(
                     (t:any)=>t.name==="warehouse"
-                ).data;
-
+                )?.data ?? [];
 
                 dispatch(
                     setWarehouses(
@@ -32,7 +41,50 @@ export default function AppInitializer() {
                     )
                 );
 
+
+                const ingredients=data.find(
+                    (t:any)=>t.name==="ingredient"
+                )?.data ?? [];
+
+
+                dispatch(
+                    setIngredients(
+                        ingredients.map((i:any)=>({
+                            ...i,
+                            ingredient_stock_qty:Number(
+                                i.ingredient_stock_qty
+                            )
+                        }))
+                    )
+                );
+
+                const recipes=data.find(
+                    (t:any)=>t.name==="recipe"
+                )?.data ?? [];
+
+
+                dispatch(
+                    setRecipes(
+                        recipes
+                    )
+                );
+
+                const recipeIngredients=data.find(
+                    (t:any)=>t.name==="recipe_ingredient"
+                )?.data ?? [];
+
+
+                dispatch(
+                    setRecipeIngredients(
+                        recipeIngredients.map((r:any)=>({
+                            ...r,
+                            amount_mg:Number(r.amount_mg)
+                        }))
+                    )
+                );
+
             });
+
 
     },[dispatch]);
 

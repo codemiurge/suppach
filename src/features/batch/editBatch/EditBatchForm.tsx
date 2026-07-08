@@ -61,6 +61,7 @@ export default function EditBatchForm({
             <label>Название партии</label>
             <input
                 value={name}
+                required
                 onChange={e => setName(e.target.value)}
             />
 
@@ -71,6 +72,7 @@ export default function EditBatchForm({
                 type="number"
                 min={0}
                 value={quantity}
+                required
                 onChange={e => setQuantity(Number(e.target.value))}
             />
 
@@ -80,6 +82,7 @@ export default function EditBatchForm({
                 type="number"
                 min={0}
                 value={capsulesPerUnit}
+                required
                 onChange={
                     e => setCapsulesPerUnit(Number(e.target.value))
                 }
