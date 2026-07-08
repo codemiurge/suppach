@@ -1,0 +1,1150 @@
+
+
+==================== FILE: app\MainLayout.tsx ====================
+
+import { Outlet } from "react-router-dom";
+
+
+export default function MainLayout(){
+
+    return (
+        <main>
+            <Outlet/>
+        </main>
+    );
+}
+
+
+==================== FILE: app\router.tsx ====================
+
+import { createBrowserRouter} from "react-router-dom";
+import MainLayout from "./MainLayout";
+import BatchesPage from "@pages/Batches/BatchesPage";
+
+export const router = createBrowserRouter([{
+    path: "/",
+    element: <MainLayout />,
+    children:[
+        {index: true, element:<BatchesPage/>}
+    ]
+}])
+
+
+==================== FILE: app\store.tsx ====================
+
+import { configureStore } from "@reduxjs/toolkit";
+import batchReducer from "@entities/batch/models/batchSlice"
+
+export const store = configureStore({
+    reducer:{
+        batch: batchReducer
+    }
+})
+
+export type RootState = ReturnType<
+    typeof store.getState
+>;
+
+export type AppDispatch =
+    typeof store.dispatch;
+
+
+==================== FILE: entities\batch\models\batchSlice.tsx ====================
+
+import {
+    createSlice,
+    type PayloadAction,
+} from "@reduxjs/toolkit";
+
+export const BATCH_STATUSES = [
+    "Ожидание проверки",
+    "В работе",
+    "Допущена",
+    "Отклонена",
+    "Утилизация",
+] as const;
+
+export type BatchStatus = typeof BATCH_STATUSES[number];
+
+export interface Batch {
+    id: string;
+    name: string;
+    status: BatchStatus;
+    recipe_id: string | null;
+    quantity_units: number;
+    capsules_per_unit: number;
+    total_capsules: number;
+}
+
+interface BatchState {
+    list: Batch[];
+}
+
+const initialState: BatchState = {
+    list: [],
+};
+
+const batchSlice = createSlice({
+    name: "batch",
+
+    initialState,
+
+    reducers: {
+        setBatches(state, action: PayloadAction<Batch[]>) {
+            state.list = action.payload;
+        },
+
+        addBatch(state, action: PayloadAction<Batch>) {
+            state.list.push(action.payload);
+        },
+
+        updateBatch(state, action: PayloadAction<Batch>) {
+            const index = state.list.findIndex(
+                batch => batch.id === action.payload.id
+            );
+
+            if (index !== -1) {
+                state.list[index] = action.payload;
+            }
+        },
+
+        deleteBatch(state, action: PayloadAction<string>) {
+            state.list = state.list.filter(
+                batch => batch.id !== action.payload
+            );
+        },
+    },
+});
+
+export const {
+    setBatches,
+    addBatch,
+    updateBatch,
+    deleteBatch,
+} = batchSlice.actions;
+
+export default batchSlice.reducer;
+
+
+==================== FILE: entities\batch\types.ts ====================
+
+
+
+==================== FILE: entities\ingredient\models\ingredientSlice.tsx ====================
+
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+
+export type Ingredient = {
+  id: string;
+  name: string;
+  unit: string;
+  stock: number;
+  warehouse_id: string;
+};
+
+type State = {
+  list: Ingredient[];
+};
+
+const initialState: State = {
+  list: [],
+};
+
+const ingredientSlice = createSlice({
+  name: "ingredient",
+  initialState,
+  reducers: {
+    setIngredients(state, action: PayloadAction<Ingredient[]>) {
+      state.list = action.payload;
+    },
+
+    updateStock(
+      state,
+      action: PayloadAction<{ id: string; stock: number }>
+    ) {
+      const i = state.list.find(x => x.id === action.payload.id);
+      if (i) i.stock = action.payload.stock;
+    },
+  },
+});
+
+export const { setIngredients, updateStock } = ingredientSlice.actions;
+export default ingredientSlice.reducer;
+
+
+==================== FILE: entities\ingredient\types.ts ====================
+
+
+
+==================== FILE: entities\qualityTest\models\qualityTestSlice.tsx ====================
+
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+
+export type QualityTest = {
+  qualityTestId: string;
+  batchId: string;
+  workerId: string;
+  methodType: string;
+  testDate: string;
+  testResult: string;
+};
+
+type State = {
+  list: QualityTest[];
+};
+
+const initialState: State = {
+  list: [],
+};
+
+const qualityTestSlice = createSlice({
+  name: "qualityTest",
+  initialState,
+  reducers: {
+    setQualityTests(state, action: PayloadAction<QualityTest[]>) {
+      state.list = action.payload;
+    },
+
+    addQualityTest(state, action: PayloadAction<QualityTest>) {
+      state.list.push(action.payload);
+    },
+  },
+});
+
+export const { setQualityTests, addQualityTest } = qualityTestSlice.actions;
+export default qualityTestSlice.reducer;
+
+
+==================== FILE: entities\qualityTest\types.ts ====================
+
+
+
+==================== FILE: entities\recipe\models\recipeSlice.tsx ====================
+
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+
+export type Recipe = {
+  recipe_id: string;
+  name: string;
+};
+
+type State = {
+  list: Recipe[];
+};
+
+const initialState: State = {
+  list: [],
+};
+
+const recipeSlice = createSlice({
+  name: "recipe",
+  initialState,
+  reducers: {
+    setRecipes(state, action: PayloadAction<Recipe[]>) {
+      state.list = action.payload;
+    },
+    addRecipe(state, action: PayloadAction<Recipe>) {
+      state.list.push(action.payload);
+    },
+  },
+});
+
+export const { setRecipes, addRecipe } = recipeSlice.actions;
+export default recipeSlice.reducer;
+
+
+==================== FILE: entities\recipe\types.ts ====================
+
+
+
+==================== FILE: entities\user\types.ts ====================
+
+
+
+==================== FILE: entities\warehouse\models\warehouseSlice.tsx ====================
+
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+
+export type Warehouse = {
+  warehouse_id: string;
+  warehouse_location: string;
+  warehouse_volume: number;
+  max_volume: number;
+};
+
+type State = {
+  list: Warehouse[];
+};
+
+const initialState: State = {
+  list: [],
+};
+
+const warehouseSlice = createSlice({
+  name: "warehouse",
+  initialState,
+  reducers: {
+    setWarehouses(state, action: PayloadAction<Warehouse[]>) {
+      state.list = action.payload;
+    },
+
+    updateWarehouseVolume(
+      state,
+      action: PayloadAction<{ id: string; volume: number }>
+    ) {
+      const w = state.list.find(x => x.warehouse_id === action.payload.id);
+      if (w) w.warehouse_volume = action.payload.volume;
+    },
+  },
+});
+
+export const { setWarehouses, updateWarehouseVolume } = warehouseSlice.actions;
+export default warehouseSlice.reducer;
+
+
+==================== FILE: entities\warehouse\types.ts ====================
+
+
+
+==================== FILE: entities\worker\models\workerSlice.tsx ====================
+
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+
+export type Worker = {
+  worker_id: string;
+  name: string;
+  worker_role: string;
+};
+
+type State = {
+  list: Worker[];
+};
+
+const initialState: State = {
+  list: [],
+};
+
+const workerSlice = createSlice({
+  name: "worker",
+  initialState,
+  reducers: {
+    setWorkers(state, action: PayloadAction<Worker[]>) {
+      state.list = action.payload;
+    },
+
+    addWorker(state, action: PayloadAction<Worker>) {
+      state.list.push(action.payload);
+    },
+  },
+});
+
+export const { setWorkers, addWorker } = workerSlice.actions;
+export default workerSlice.reducer;
+
+
+==================== FILE: entities\worker\types.ts ====================
+
+
+
+==================== FILE: features\batch\createBatch\createBatch.ts ====================
+
+import type { Batch } from "@entities/batch/models/batchSlice";
+
+export async function createBatch(data: Partial<Batch>): Promise<Batch> {
+    const quantityUnits = data.quantity_units ?? 0;
+    const capsulesPerUnit = data.capsules_per_unit ?? 0;
+
+    return {
+        id: crypto.randomUUID(),
+        name: data.name ?? "",
+        status: data.status ?? "В работе",
+        recipe_id: data.recipe_id ?? null,
+        quantity_units: quantityUnits,
+        capsules_per_unit: capsulesPerUnit,
+        total_capsules: quantityUnits * capsulesPerUnit,
+    };
+}
+
+
+==================== FILE: features\batch\createBatch\CreateBatchForm.scss ====================
+
+.createBatchForm {
+    width:380px;
+
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+
+    h2 {
+        margin-bottom:15px;
+        font-size:22px;
+        color:#4A3B33;
+    }
+
+
+    label {
+        font-size:14px;
+        font-weight:600;
+        color:#7A665D;
+    }
+
+
+    input,
+    select {
+        padding:12px 14px;
+
+        border:1px solid #F5D9C7;
+        border-radius:12px;
+
+        background:#FFFBF6;
+
+        font-size:15px;
+        color:#4A3B33;
+
+
+        &:focus {
+            outline:none;
+            border-color:#FF9D5C;
+            box-shadow:0 0 0 3px rgba(255,157,92,.2);
+        }
+    }
+
+
+    button {
+        margin-top:15px;
+
+        height:44px;
+
+        border:none;
+        border-radius:10px;
+
+        background:#FF9D5C;
+        color:white;
+
+        font-weight:600;
+
+        cursor:pointer;
+
+
+        &:hover {
+            background:#FF8C2B;
+        }
+    }
+}
+
+
+==================== FILE: features\batch\createBatch\CreateBatchForm.tsx ====================
+
+import React, { useState } from "react";
+
+import { useDispatch } from "react-redux";
+
+import {
+    addBatch,
+    BATCH_STATUSES,
+    type BatchStatus,
+} from "@entities/batch/models/batchSlice";
+
+import "./createBatchForm.scss";
+
+
+interface Props {
+    onClose: () => void;
+}
+
+
+export default function CreateBatchForm({ onClose }: Props) {
+    const dispatch = useDispatch();
+
+
+    const [name, setName] = useState("");
+    const [status, setStatus] = useState<BatchStatus>("В работе");
+    const [quantity, setQuantity] = useState(0);
+    const [capsulesPerUnit, setCapsulesPerUnit] = useState(10);
+
+
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
+
+        dispatch(
+            addBatch({
+                id: crypto.randomUUID(),
+                name,
+                status,
+                recipe_id: null,
+                quantity_units: quantity,
+                capsules_per_unit: capsulesPerUnit,
+                total_capsules: quantity * capsulesPerUnit,
+            })
+        );
+
+
+        setName("");
+        setQuantity(0);
+        setCapsulesPerUnit(10);
+
+        onClose();
+    }
+
+
+    return (
+        <form
+            className="createBatchForm"
+            onSubmit={handleSubmit}
+        >
+            <h2>
+                Создание партии
+            </h2>
+
+
+            <label>
+                Название партии
+            </label>
+
+
+            <input
+                value={name}
+                placeholder="Например: Магний бисглицинат"
+                onChange={e => setName(e.target.value)}
+            />
+
+
+            <label>
+                Количество единиц
+            </label>
+
+
+            <input
+                type="number"
+                value={quantity}
+                min={0}
+                onChange={e => setQuantity(Number(e.target.value))}
+            />
+
+
+            <label>
+                Капсул в единице
+            </label>
+
+
+            <input
+                type="number"
+                value={capsulesPerUnit}
+                min={0}
+                onChange={e => setCapsulesPerUnit(Number(e.target.value))}
+            />
+
+
+            <label>
+                Статус
+            </label>
+
+
+            <select
+                value={status}
+                onChange={e => setStatus(e.target.value as BatchStatus)}
+            >
+                {BATCH_STATUSES.map(status => (
+                    <option
+                        key={status}
+                        value={status}
+                    >
+                        {status}
+                    </option>
+                ))}
+            </select>
+
+
+            <button>
+                Создать партию
+            </button>
+        </form>
+    );
+}
+
+
+==================== FILE: features\batch\editBatch\EditBatchForm.scss ====================
+
+.editBatchForm {
+    width:380px;
+
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+
+    h2 {
+        margin-bottom:15px;
+        color:#4A3B33;
+        font-size:22px;
+    }
+
+
+    label {
+        color:#7A665D;
+        font-size:14px;
+        font-weight:600;
+    }
+
+
+    input,
+    select {
+        padding:12px 14px;
+        border:1px solid #F5D9C7;
+        border-radius:12px;
+        background:#FFFBF6;
+        color:#4A3B33;
+    }
+
+
+    button {
+        height:44px;
+        margin-top:15px;
+        border:none;
+        border-radius:10px;
+        background:#FF9D5C;
+        color:white;
+        font-weight:600;
+        cursor:pointer;
+
+        &:hover {
+            background:#FF8C2B;
+        }
+    }
+}
+
+
+==================== FILE: features\batch\editBatch\EditBatchForm.tsx ====================
+
+import React, { useState } from "react";
+
+import { useDispatch } from "react-redux";
+
+import {
+    updateBatch,
+    BATCH_STATUSES,
+    type Batch,
+    type BatchStatus,
+} from "@entities/batch/models/batchSlice";
+
+import "./editBatchForm.scss";
+
+
+interface Props {
+    batch: Batch;
+    onClose: () => void;
+}
+
+
+export default function EditBatchForm({
+    batch,
+    onClose,
+}: Props) {
+
+    const dispatch = useDispatch();
+
+
+    const [name, setName] = useState(batch.name);
+    const [status, setStatus] = useState<BatchStatus>(batch.status);
+    const [quantity, setQuantity] = useState(batch.quantity_units);
+    const [capsulesPerUnit, setCapsulesPerUnit] = useState(
+        batch.capsules_per_unit
+    );
+
+
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
+        dispatch(
+            updateBatch({
+                ...batch,
+                name,
+                status,
+                quantity_units: quantity,
+                capsules_per_unit: capsulesPerUnit,
+                total_capsules: quantity * capsulesPerUnit,
+            })
+        );
+
+        onClose();
+    }
+
+    return (
+        <form
+            className="editBatchForm"
+            onSubmit={handleSubmit}>
+
+            <h2>Редактирование партии</h2>
+
+            <label>Название партии</label>
+            <input
+                value={name}
+                onChange={e => setName(e.target.value)}
+            />
+
+
+            <label>Количество единиц</label>
+
+            <input
+                type="number"
+                min={0}
+                value={quantity}
+                onChange={e => setQuantity(Number(e.target.value))}
+            />
+
+            <label>Капсул в единице</label>
+            
+            <input
+                type="number"
+                min={0}
+                value={capsulesPerUnit}
+                onChange={
+                    e => setCapsulesPerUnit(Number(e.target.value))
+                }
+            />
+
+            <label>Статус</label>
+
+            <select
+                value={status}
+                onChange={
+                    e => setStatus(e.target.value as BatchStatus)
+                }>
+
+                {BATCH_STATUSES.map(status => (
+                    <option key={status} value={status}> {status} </option>
+                ))}
+            </select>
+
+
+            <button> Сохранить изменения </button>
+        </form>
+    );
+}
+
+
+==================== FILE: main.tsx ====================
+
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+
+import {RouterProvider} from 'react-router-dom'
+import { Provider } from 'react-redux'
+import './index.css'
+
+import { router } from '@app/router'
+import { store } from '@app/store'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <Provider store={store}>
+      <RouterProvider router={router}/>
+    </Provider>
+  </StrictMode>,
+)
+
+
+==================== FILE: pages\Batches\BatchesPage.scss ====================
+
+*{font-family: Inter;}
+
+.batchesPage {
+    min-height:100vh;
+    padding:40px;
+    background:#FFF4EC;
+}
+
+
+.pageHeader {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+
+    h1 {
+        margin:0;
+        font-size:28px;
+        color:#3E2F25;
+        margin-bottom: 12px;
+    }
+
+    p {
+        margin-top:6px;
+        color:#7A665D;
+    }
+}
+
+
+.createButton {
+    height:44px;
+    padding:0 22px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#FF9D5C;
+    color:white;
+
+    font-weight:600;
+    cursor:pointer;
+
+
+    &:hover {
+        background:#FF8C2B;
+    }
+}
+
+
+.modalOverlay {
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(74,59,51,.25);
+}
+
+
+.modal {
+    position:relative;
+
+    background:#FFFBF6;
+    border-radius:24px;
+    padding:30px;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.15);
+}
+
+
+.closeButton {
+    position:absolute;
+    right:25px;
+    top:25px;
+
+    border:none;
+    background:none;
+
+    font-size:28px;
+    color:#7A665D;
+
+    cursor:pointer;
+}
+
+
+==================== FILE: pages\Batches\BatchesPage.tsx ====================
+
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import {
+    setBatches,
+    type Batch,
+} from "@entities/batch/models/batchSlice";
+
+
+import CreateBatchForm from "@features/batch/createBatch/CreateBatchForm";
+import EditBatchForm from "@features/batch/editBatch/EditBatchForm";
+
+import { BatchTable } from "@widgets/BatchTable/BatchTable";
+
+import {
+    FontAwesomeIcon,
+    faPlus
+} from "@shared/icons";
+
+import "./BatchesPage.scss";
+
+
+export default function BatchesPage() {
+
+    const dispatch = useDispatch();
+    const [createOpen, setCreateOpen] = useState(false);
+    const [editingBatch, setEditingBatch] = useState<Batch | null>(null);
+
+    useEffect(() => {
+        fetch("/db.json")
+            .then(res => res.json())
+            .then(data => {
+
+                const batches = data.find(
+                    (table: any) => table.name === "batch"
+                ).data;
+
+                dispatch(
+                    setBatches(
+                        batches.map((batch: any) => ({
+                            ...batch,
+                            quantity_units: Number(batch.quantity_units),
+                            capsules_per_unit: Number(batch.capsules_per_unit),
+                            total_capsules: Number(batch.total_capsules),
+                        }))
+                    )
+                );
+            });
+
+    }, [dispatch]);
+
+    return (
+        <div className="batchesPage">
+            <div className="pageHeader">
+                <div>
+                    <h1>
+                        Партии
+                    </h1>
+                    <p>
+                        Управление производственными партиями
+                    </p>
+                </div>
+
+                <button
+                    className="createButton"
+                    onClick={() => setCreateOpen(true)}
+                >
+                    <FontAwesomeIcon icon={faPlus}/>
+                     Создать партию
+                </button>
+
+            </div>
+
+            <BatchTable
+                onEdit={setEditingBatch}
+            />
+
+            {createOpen && (
+                <div className="modalOverlay">
+
+                    <div className="modal">
+
+                        <button
+                            className="closeButton"
+                            onClick={() => setCreateOpen(false)}
+                        >
+                            ×
+                        </button>
+
+                        <CreateBatchForm
+                            onClose={() => setCreateOpen(false)}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {editingBatch && (
+                <div className="modalOverlay">
+                    <div className="modal">
+                        <button
+                            className="closeButton"
+                            onClick={() => setEditingBatch(null)}
+                        >
+                            ×
+                        </button>
+
+                        <EditBatchForm
+                            batch={editingBatch}
+                            onClose={() => setEditingBatch(null)}
+                        />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+
+==================== FILE: shared\api\client\api.ts ====================
+
+export const api = {
+    async get(url: string) {
+        const response = await fetch(url);
+        return response.json();
+    },
+
+    async post(url: string, body: unknown) {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(body)
+        })
+        return response.json();
+    }
+}
+
+
+==================== FILE: shared\icons.ts ====================
+
+export { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+export {
+    faPlus,
+    faBox,
+    faFlask,
+    faPencil,
+    faTrash
+} from "@fortawesome/free-solid-svg-icons";
+
+
+==================== FILE: widgets\BatchTable\BatchTable.scss ====================
+
+.batchTableWrapper {
+    background:#FFFBF6;
+    border-radius:20px;
+    padding:25px;
+    border:1px solid #F5D9C7;
+    box-shadow:0 15px 40px rgba(74,59,51,.08);
+}
+
+
+table {
+    width:100%;
+    border-collapse:collapse;
+}
+
+
+th {
+    padding:15px;
+    text-align:left;
+    color:#7A665D;
+    font-size:14px;
+}
+
+
+td {
+    padding:15px;
+    border-top:1px solid #F5D9C7;
+    color:#4A3B33;
+}
+
+.edit {
+    margin-right:10px;
+    padding:8px 14px;
+    border:none;
+    border-radius:10px;
+    background:#FFEE9C;
+    color:#5f381e;
+    cursor:pointer;
+
+    &:hover {
+        background:#FFD982;
+    }
+}
+
+
+.status {
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:15px;
+    background:#FFF1D6;
+    color:#B66B00;
+}
+
+
+.delete {
+    padding:8px 14px;
+    border:none;
+    border-radius:10px;
+    background:#FFDEDE;
+    color:#C0392B;
+
+    cursor:pointer;
+    &:hover {
+        background:#FFBABA;
+    }
+}
+
+
+==================== FILE: widgets\BatchTable\BatchTable.tsx ====================
+
+import { useDispatch, useSelector } from "react-redux";
+
+import type { RootState } from "@app/store";
+
+import {
+    deleteBatch,
+    type Batch,
+} from "@entities/batch/models/batchSlice";
+
+
+import {
+    FontAwesomeIcon,
+    faPencil, faTrash
+} from "@shared/icons";
+
+import "./BatchTable.scss";
+
+
+interface Props {
+    onEdit: (batch: Batch) => void;
+}
+
+
+export function BatchTable({ onEdit }: Props) {
+    const dispatch = useDispatch();
+
+    const batches = useSelector(
+        (state: RootState) => state.batch.list
+    );
+
+    return (
+        <div className="batchTableWrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Статус</th>
+                        <th>Единицы</th>
+                        <th>Капсулы</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    {batches.map(batch => (
+                        <tr key={batch.id}>
+                            <td>{batch.name}</td>
+
+                            <td>
+                                <span className="status">
+                                    {batch.status}
+                                </span>
+                            </td>
+
+                            <td>
+                                {batch.quantity_units}
+                            </td>
+
+                            <td>
+                                {batch.total_capsules}
+                            </td>
+
+
+                            <td>
+                                <button
+                                    className="edit"
+                                    onClick={() => onEdit(batch)}
+                                >
+                                    <FontAwesomeIcon icon={faPencil}/>
+                                </button>
+
+                                <button
+                                    className="delete"
+                                    onClick={() =>
+                                        dispatch(
+                                            deleteBatch(batch.id)
+                                        )
+                                    }
+                                >
+                                    <FontAwesomeIcon icon={faTrash}/>
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+}

@@ -37,7 +37,6 @@ export default function EditBatchForm({
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
-
         dispatch(
             updateBatch({
                 ...batch,
@@ -49,16 +48,14 @@ export default function EditBatchForm({
             })
         );
 
-
         onClose();
     }
-
 
     return (
         <form
             className="editBatchForm"
-            onSubmit={handleSubmit}
-        >
+            onSubmit={handleSubmit}>
+
             <h2>Редактирование партии</h2>
 
             <label>Название партии</label>
@@ -88,31 +85,21 @@ export default function EditBatchForm({
                 }
             />
 
-
-            <label>
-                Статус
-            </label>
+            <label>Статус</label>
 
             <select
                 value={status}
                 onChange={
                     e => setStatus(e.target.value as BatchStatus)
-                }
-            >
+                }>
+
                 {BATCH_STATUSES.map(status => (
-                    <option
-                        key={status}
-                        value={status}
-                    >
-                        {status}
-                    </option>
+                    <option key={status} value={status}> {status} </option>
                 ))}
             </select>
 
 
-            <button>
-                Сохранить изменения
-            </button>
+            <button> Сохранить изменения </button>
         </form>
     );
 }

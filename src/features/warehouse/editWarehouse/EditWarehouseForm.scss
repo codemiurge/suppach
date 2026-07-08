@@ -1,0 +1,40 @@
+.editWarehouseForm {
+
+    width:380px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+    h2{
+        color:#4A3B33;
+        font-size:22px;
+    }
+
+    label{
+        color:#7A665D;
+        font-weight:600;
+        font-size:14px;
+    }
+
+    input{
+
+        padding:12px 14px;
+        border:1px solid #F5D9C7;
+        border-radius:12px;
+        background:#FFFBF6;
+    }
+
+
+    button{
+
+        height:44px;
+        margin-top:15px;
+        border:none;
+        border-radius:10px;
+        background:#FF9D5C;
+        color:white;
+        cursor:pointer;
+
+    }
+
+}

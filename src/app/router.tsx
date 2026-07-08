@@ -1,11 +1,13 @@
 import { createBrowserRouter} from "react-router-dom";
 import MainLayout from "./MainLayout";
 import BatchesPage from "@pages/Batches/BatchesPage";
+import WarehousesPage from "@pages/Warehouses/WarehousesPage";
 
 export const router = createBrowserRouter([{
     path: "/",
     element: <MainLayout />,
     children:[
-        {index: true, element:<BatchesPage/>}
+        {index: true, element:<BatchesPage/>},
+        {path:"warehouses", element:<WarehousesPage/>}
     ]
 }])

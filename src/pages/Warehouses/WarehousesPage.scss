@@ -1,0 +1,85 @@
+*{font-family: Inter;}
+
+.batchesPage {
+    min-height:100vh;
+    padding:40px;
+    background:#FFF4EC;
+}
+
+
+.pageHeader {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+
+    h1 {
+        margin:0;
+        font-size:28px;
+        color:#3E2F25;
+        margin-bottom: 12px;
+    }
+
+    p {
+        margin-top:6px;
+        color:#7A665D;
+    }
+}
+
+
+.createButton {
+    height:44px;
+    padding:0 22px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#FF9D5C;
+    color:white;
+
+    font-weight:600;
+    cursor:pointer;
+
+
+    &:hover {
+        background:#FF8C2B;
+    }
+}
+
+
+.modalOverlay {
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(74,59,51,.25);
+}
+
+
+.modal {
+    position:relative;
+
+    background:#FFFBF6;
+    border-radius:24px;
+    padding:30px;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.15);
+}
+
+
+.closeButton {
+    position:absolute;
+    right:25px;
+    top:25px;
+
+    border:none;
+    background:none;
+
+    font-size:28px;
+    color:#7A665D;
+
+    cursor:pointer;
+}
