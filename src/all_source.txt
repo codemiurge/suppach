@@ -20,12 +20,16 @@ export default function MainLayout(){
 import { createBrowserRouter} from "react-router-dom";
 import MainLayout from "./MainLayout";
 import BatchesPage from "@pages/Batches/BatchesPage";
+import WarehousesPage from "@pages/Warehouses/WarehousesPage";
+import IngredientsPage from "@pages/Ingredients/IngredientsPage";
 
 export const router = createBrowserRouter([{
     path: "/",
     element: <MainLayout />,
     children:[
-        {index: true, element:<BatchesPage/>}
+        {index: true, element:<BatchesPage/>},
+        {path:"warehouses", element:<WarehousesPage/>},
+        {path:"ingredients", element:<IngredientsPage/>}
     ]
 }])
 
@@ -34,10 +38,15 @@ export const router = createBrowserRouter([{
 
 import { configureStore } from "@reduxjs/toolkit";
 import batchReducer from "@entities/batch/models/batchSlice"
+import warehouseReducer from "@entities/warehouse/models/warehouseSlice";
+import ingredientReducer from "@entities/ingredient/models/ingredientSlice";
 
 export const store = configureStore({
     reducer:{
-        batch: batchReducer
+        batch: batchReducer,
+        warehouse: warehouseReducer,
+        ingredient: ingredientReducer
+        
     }
 })
 
@@ -132,43 +141,89 @@ export default batchSlice.reducer;
 
 ==================== FILE: entities\ingredient\models\ingredientSlice.tsx ====================
 
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import {
+    createSlice,
+    type PayloadAction
+} from "@reduxjs/toolkit";
+
 
 export type Ingredient = {
-  id: string;
-  name: string;
-  unit: string;
-  stock: number;
-  warehouse_id: string;
+    id: string;
+    name: string;
+    unit: string;
+    stock: number;
+    warehouse_id: string;
 };
 
-type State = {
-  list: Ingredient[];
+
+interface IngredientState {
+    list: Ingredient[];
+}
+
+
+const initialState: IngredientState = {
+    list: []
 };
 
-const initialState: State = {
-  list: [],
-};
 
 const ingredientSlice = createSlice({
-  name: "ingredient",
-  initialState,
-  reducers: {
-    setIngredients(state, action: PayloadAction<Ingredient[]>) {
-      state.list = action.payload;
-    },
+    name: "ingredient",
 
-    updateStock(
-      state,
-      action: PayloadAction<{ id: string; stock: number }>
-    ) {
-      const i = state.list.find(x => x.id === action.payload.id);
-      if (i) i.stock = action.payload.stock;
-    },
-  },
+    initialState,
+
+    reducers: {
+        setIngredients(
+            state,
+            action: PayloadAction<Ingredient[]>
+        ) {
+            state.list = action.payload;
+        },
+
+
+        addIngredient(
+            state,
+            action: PayloadAction<Ingredient>
+        ) {
+            state.list.push(action.payload);
+        },
+
+
+        updateIngredient(
+            state,
+            action: PayloadAction<Ingredient>
+        ) {
+            const index = state.list.findIndex(
+                ingredient =>
+                    ingredient.id === action.payload.id
+            );
+
+            if (index !== -1) {
+                state.list[index] = action.payload;
+            }
+        },
+
+
+        deleteIngredient(
+            state,
+            action: PayloadAction<string>
+        ) {
+            state.list = state.list.filter(
+                ingredient =>
+                    ingredient.id !== action.payload
+            );
+        }
+    }
 });
 
-export const { setIngredients, updateStock } = ingredientSlice.actions;
+
+export const {
+    setIngredients,
+    addIngredient,
+    updateIngredient,
+    deleteIngredient
+} = ingredientSlice.actions;
+
+
 export default ingredientSlice.reducer;
 
 
@@ -265,40 +320,96 @@ export default recipeSlice.reducer;
 
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
+
 export type Warehouse = {
-  warehouse_id: string;
-  warehouse_location: string;
-  warehouse_volume: number;
-  max_volume: number;
+    warehouse_id: string;
+    warehouse_location: string;
+    warehouse_volume: number;
+    max_volume: number;
 };
 
-type State = {
-  list: Warehouse[];
+
+type WarehouseState = {
+    list: Warehouse[];
 };
 
-const initialState: State = {
-  list: [],
+
+const initialState: WarehouseState = {
+    list: [],
 };
+
 
 const warehouseSlice = createSlice({
-  name: "warehouse",
-  initialState,
-  reducers: {
-    setWarehouses(state, action: PayloadAction<Warehouse[]>) {
-      state.list = action.payload;
-    },
 
-    updateWarehouseVolume(
-      state,
-      action: PayloadAction<{ id: string; volume: number }>
-    ) {
-      const w = state.list.find(x => x.warehouse_id === action.payload.id);
-      if (w) w.warehouse_volume = action.payload.volume;
-    },
-  },
+    name: "warehouse",
+
+    initialState,
+
+    reducers: {
+
+
+        setWarehouses(
+            state,
+            action: PayloadAction<Warehouse[]>
+        ){
+            state.list = action.payload;
+        },
+
+
+        addWarehouse(
+            state,
+            action: PayloadAction<Warehouse>
+        ){
+            state.list.push(action.payload);
+        },
+
+
+        updateWarehouse(
+            state,
+            action: PayloadAction<Warehouse>
+        ){
+
+            const index = state.list.findIndex(
+                warehouse =>
+                    warehouse.warehouse_id ===
+                    action.payload.warehouse_id
+            );
+
+
+            if(index !== -1){
+                state.list[index] = action.payload;
+            }
+
+        },
+
+
+        deleteWarehouse(
+            state,
+            action: PayloadAction<string>
+        ){
+
+            state.list =
+                state.list.filter(
+                    warehouse =>
+                        warehouse.warehouse_id !== action.payload
+                );
+
+        }
+
+    }
+
 });
 
-export const { setWarehouses, updateWarehouseVolume } = warehouseSlice.actions;
+
+export const {
+    setWarehouses,
+    addWarehouse,
+    updateWarehouse,
+    deleteWarehouse
+
+} = warehouseSlice.actions;
+
+
 export default warehouseSlice.reducer;
 
 
@@ -725,6 +836,734 @@ export default function EditBatchForm({
 }
 
 
+==================== FILE: features\ingredient\createIngredient\CreateIngredientForm.scss ====================
+
+.createIngredientForm {
+    width: 380px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    h2 {
+        color: #4A3B33;
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    label {
+        color: #7A665D;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    input,
+    select {
+        padding: 12px 14px;
+
+        border: 1px solid #F5D9C7;
+        border-radius: 12px;
+
+        background: #FFFBF6;
+        color: #4A3B33;
+    }
+
+    button {
+        margin-top: 15px;
+
+        height: 44px;
+
+        border: none;
+        border-radius: 10px;
+
+        background: #FF9D5C;
+
+        color: white;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        &:hover {
+            background: #FF8C2B;
+        }
+    }
+}
+
+
+
+==================== FILE: features\ingredient\createIngredient\CreateIngredientForm.tsx ====================
+
+import React, { useState } from "react";
+
+import {
+    useDispatch,
+    useSelector
+} from "react-redux";
+
+import type { RootState } from "@app/store";
+
+import {
+    addIngredient
+} from "@entities/ingredient/models/ingredientSlice";
+
+import "./CreateIngredientForm.scss";
+
+
+interface Props {
+    onClose: () => void;
+}
+
+
+export default function CreateIngredientForm({
+    onClose
+}: Props) {
+    const dispatch = useDispatch();
+
+    const warehouses = useSelector(
+        (state: RootState) =>
+            state.warehouse.list
+    );
+
+
+    const [name, setName] = useState("");
+    const [unit, setUnit] = useState("г");
+    const [stock, setStock] = useState(0);
+    const [warehouseId, setWarehouseId] = useState("");
+
+
+    function submit(e: React.FormEvent) {
+        e.preventDefault();
+
+        dispatch(
+            addIngredient({
+                id: crypto.randomUUID(),
+                name,
+                unit,
+                stock,
+                warehouse_id: warehouseId
+            })
+        );
+
+        setName("");
+        setStock(0);
+
+        onClose();
+    }
+
+
+    return (
+        <form
+            className="createIngredientForm"
+            onSubmit={submit}
+        >
+            <h2>
+                Создание ингредиента
+            </h2>
+
+
+            <label>
+                Название
+            </label>
+
+            <input
+                value={name}
+                placeholder="Например: Магний"
+                onChange={e => setName(e.target.value)}
+            />
+
+
+            <label>
+                Единица измерения
+            </label>
+
+            <input
+                value={unit}
+                onChange={e => setUnit(e.target.value)}
+            />
+
+
+            <label>
+                Количество на складе
+            </label>
+
+            <input
+                type="number"
+                min={0}
+                value={stock}
+                onChange={e =>
+                    setStock(
+                        Number(e.target.value)
+                    )
+                }
+            />
+
+
+            <label>
+                Склад
+            </label>
+
+            <select
+                value={warehouseId}
+                onChange={e =>
+                    setWarehouseId(e.target.value)
+                }
+            >
+                <option value="">
+                    Выберите склад
+                </option>
+
+                {
+                    warehouses.map(w => (
+                        <option
+                            key={w.warehouse_id}
+                            value={w.warehouse_id}
+                        >
+                            {w.warehouse_location}
+                        </option>
+                    ))
+                }
+            </select>
+
+
+            <button>
+                Создать ингредиент
+            </button>
+        </form>
+    );
+}
+
+
+==================== FILE: features\ingredient\editIngredient\EditIngredientForm.scss ====================
+
+.editIngredientForm {
+    width: 380px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    h2 {
+        color: #4A3B33;
+    }
+
+    label {
+        color: #7A665D;
+        font-weight: 600;
+    }
+
+    input,
+    select {
+        padding: 12px;
+
+        border: 1px solid #F5D9C7;
+        border-radius: 12px;
+
+        background: #FFFBF6;
+    }
+
+    button {
+        height: 44px;
+
+        margin-top: 15px;
+
+        border: none;
+        border-radius: 10px;
+
+        background: #FF9D5C;
+
+        color: white;
+
+        cursor: pointer;
+    }
+}
+
+
+==================== FILE: features\ingredient\editIngredient\EditIngredientForm.tsx ====================
+
+import React, { useState } from "react";
+
+import {
+    useDispatch,
+    useSelector
+} from "react-redux";
+
+import type { RootState } from "@app/store";
+
+import {
+    updateIngredient,
+    type Ingredient
+} from "@entities/ingredient/models/ingredientSlice";
+
+import "./EditIngredientForm.scss";
+
+
+interface Props {
+    ingredient: Ingredient;
+    onClose: () => void;
+}
+
+
+export default function EditIngredientForm({
+    ingredient,
+    onClose
+}: Props) {
+    const dispatch = useDispatch();
+
+    const warehouses = useSelector(
+        (state: RootState) =>
+            state.warehouse.list
+    );
+
+
+    const [name, setName] = useState(ingredient.name);
+    const [unit, setUnit] = useState(ingredient.unit);
+    const [stock, setStock] = useState(ingredient.stock);
+    const [warehouseId, setWarehouseId] = useState(
+        ingredient.warehouse_id
+    );
+
+
+    function submit(e: React.FormEvent) {
+        e.preventDefault();
+
+        dispatch(
+            updateIngredient({
+                ...ingredient,
+                name,
+                unit,
+                stock,
+                warehouse_id: warehouseId
+            })
+        );
+
+        onClose();
+    }
+
+
+    return (
+        <form
+            className="editIngredientForm"
+            onSubmit={submit}
+        >
+            <h2>
+                Редактирование ингредиента
+            </h2>
+
+
+            <label>
+                Название
+            </label>
+
+            <input
+                value={name}
+                onChange={e =>
+                    setName(e.target.value)
+                }
+            />
+
+
+            <label>
+                Единица
+            </label>
+
+            <input
+                value={unit}
+                onChange={e =>
+                    setUnit(e.target.value)
+                }
+            />
+
+
+            <label>
+                Количество
+            </label>
+
+            <input
+                type="number"
+                value={stock}
+                onChange={e =>
+                    setStock(
+                        Number(e.target.value)
+                    )
+                }
+            />
+
+
+            <label>
+                Склад
+            </label>
+
+            <select
+                value={warehouseId}
+                onChange={e =>
+                    setWarehouseId(e.target.value)
+                }
+            >
+                {
+                    warehouses.map(w => (
+                        <option
+                            key={w.warehouse_id}
+                            value={w.warehouse_id}
+                        >
+                            {w.warehouse_location}
+                        </option>
+                    ))
+                }
+            </select>
+
+
+            <button>
+                Сохранить изменения
+            </button>
+        </form>
+    );
+}
+
+
+==================== FILE: features\warehouse\createWarehouse\CreateWarehouseForm.scss ====================
+
+.createWarehouseForm {
+
+    width:380px;
+
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+
+    h2{
+        margin-bottom:15px;
+        font-size:22px;
+        color:#4A3B33;
+    }
+
+
+    label{
+        font-size:14px;
+        font-weight:600;
+        color:#7A665D;
+    }
+
+
+    input{
+
+        padding:12px 14px;
+
+        border:1px solid #F5D9C7;
+        border-radius:12px;
+
+        background:#FFFBF6;
+
+        font-size:15px;
+        color:#4A3B33;
+
+
+        &:focus{
+            outline:none;
+            border-color:#FF9D5C;
+            box-shadow:
+                0 0 0 3px rgba(255,157,92,.2);
+        }
+
+    }
+
+
+    button{
+
+        margin-top:15px;
+
+        height:44px;
+
+        border:none;
+        border-radius:10px;
+
+        background:#FF9D5C;
+
+        color:white;
+
+        font-weight:600;
+
+        cursor:pointer;
+
+
+        &:hover{
+            background:#FF8C2B;
+        }
+
+    }
+
+}
+
+
+==================== FILE: features\warehouse\createWarehouse\CreateWarehouseForm.tsx ====================
+
+import React, {useState} from "react";
+
+import {useDispatch} from "react-redux";
+
+import {
+    addWarehouse
+} from "@entities/warehouse/models/warehouseSlice";
+
+
+import "./CreateWarehouseForm.scss";
+
+interface Props{
+    onClose:()=>void;
+}
+
+export default function CreateWarehouseForm({
+    onClose
+}:Props){
+
+    const dispatch = useDispatch();
+    const [location,setLocation] = useState("");
+    const [maxVolume,setMaxVolume] = useState(0);
+
+    function handleSubmit(e:React.FormEvent){
+        e.preventDefault();
+
+        dispatch(
+            addWarehouse({
+
+                warehouse_id:
+                    crypto.randomUUID(),
+
+                warehouse_location:
+                    location,
+
+                warehouse_volume:
+                    0,
+
+                max_volume:
+                    maxVolume
+
+            })
+        );
+
+        setLocation("");
+        setMaxVolume(0);
+
+        onClose();
+
+    }
+
+    return (
+        <form
+            className="createWarehouseForm"
+            onSubmit={handleSubmit}
+        >
+
+            <h2>Создание склада</h2>
+
+            <label>Расположение склада</label>
+
+            <input
+                value={location}
+                placeholder="Например: Липецк, ул. Тестовая, 5"
+                onChange={
+                    e=>setLocation(e.target.value)
+                }
+
+            />
+
+
+            <label>Максимальный объем</label>
+
+            <input
+                type="number"
+                min={0}
+                value={maxVolume}
+                onChange={
+                    e=>
+                    setMaxVolume(
+                        Number(e.target.value)
+                    )
+                }
+
+            />
+            <button>Создать склад</button>
+        </form>
+
+    );
+
+}
+
+
+==================== FILE: features\warehouse\editWarehouse\EditWarehouseForm.scss ====================
+
+.editWarehouseForm {
+
+    width:380px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+    h2{
+        color:#4A3B33;
+        font-size:22px;
+    }
+
+    label{
+        color:#7A665D;
+        font-weight:600;
+        font-size:14px;
+    }
+
+    input{
+
+        padding:12px 14px;
+        border:1px solid #F5D9C7;
+        border-radius:12px;
+        background:#FFFBF6;
+    }
+
+
+    button{
+
+        height:44px;
+        margin-top:15px;
+        border:none;
+        border-radius:10px;
+        background:#FF9D5C;
+        color:white;
+        cursor:pointer;
+
+    }
+
+}
+
+
+==================== FILE: features\warehouse\editWarehouse\EditWarehouseForm.tsx ====================
+
+import React,{useState} from "react";
+
+import {useDispatch} from "react-redux";
+
+import {
+
+    updateWarehouse,
+
+    type Warehouse
+
+}
+
+from "@entities/warehouse/models/warehouseSlice";
+
+
+import "./EditWarehouseForm.scss";
+
+
+interface Props{
+
+    warehouse:Warehouse;
+
+    onClose:()=>void;
+
+}
+
+
+
+export default function EditWarehouseForm({
+
+    warehouse,
+
+    onClose
+
+}:Props){
+
+
+    const dispatch = useDispatch();
+
+
+    const [location,setLocation] =
+        useState(
+            warehouse.warehouse_location
+        );
+
+
+    const [maxVolume,setMaxVolume] =
+        useState(
+            warehouse.max_volume
+        );
+
+
+
+    function submit(
+        e:React.FormEvent
+    ){
+
+        e.preventDefault();
+
+
+        dispatch(
+
+            updateWarehouse({
+
+                ...warehouse,
+
+                warehouse_location:
+                    location,
+
+                max_volume:
+                    maxVolume
+
+            })
+
+        );
+
+
+        onClose();
+
+    }
+
+
+
+    return (
+
+        <form
+            className="editWarehouseForm"
+            onSubmit={submit}
+        >
+
+            <h2>
+                Редактирование склада
+            </h2>
+
+
+            <label>Расположение</label>
+
+            <input
+                value={location}
+                onChange={
+                    e=>setLocation(
+                        e.target.value
+                    )
+                }
+            />
+
+            <label>Максимальный объем</label>
+
+            <input
+                type="number"
+                min={0}
+                value={maxVolume}
+                onChange={
+                    e=>setMaxVolume(
+                        Number(e.target.value)
+                    )
+                }
+            />
+
+            <button>Сохранить изменения</button>
+
+        </form>
+
+    );
+
+}
+
+
 ==================== FILE: main.tsx ====================
 
 import { StrictMode } from 'react'
@@ -955,6 +1794,404 @@ export default function BatchesPage() {
 }
 
 
+==================== FILE: pages\Ingredients\IngredientsPage.scss ====================
+
+* {
+    font-family: Inter;
+}
+
+.ingredientsPage {
+    min-height: 100vh;
+    padding: 40px;
+    background: #FFF4EC;
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+
+    h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #3E2F25;
+        margin-bottom: 12px;
+    }
+
+    p {
+        margin-top: 6px;
+        color: #7A665D;
+    }
+}
+
+.createButton {
+    height: 44px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 10px;
+    background: #FF9D5C;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+        background: #FF8C2B;
+    }
+}
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(74, 59, 51, .25);
+}
+
+.modal {
+    position: relative;
+    background: #FFFBF6;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .15);
+}
+
+.closeButton {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    border: none;
+    background: none;
+    font-size: 28px;
+    color: #7A665D;
+    cursor: pointer;
+}
+
+
+==================== FILE: pages\Ingredients\IngredientsPage.tsx ====================
+
+import {
+    useEffect,
+    useState
+} from "react";
+
+import { useDispatch } from "react-redux";
+
+import {
+    setIngredients,
+    type Ingredient
+} from "@entities/ingredient/models/ingredientSlice";
+
+import CreateIngredientForm from "@features/ingredient/createIngredient/CreateIngredientForm";
+import EditIngredientForm from "@features/ingredient/editIngredient/EditIngredientForm";
+
+import { IngredientTable } from "@widgets/IngredientTable/IngredientTable";
+
+import {
+    FontAwesomeIcon,
+    faPlus
+} from "@shared/icons";
+
+import "./IngredientsPage.scss";
+
+
+export default function IngredientsPage() {
+    const dispatch = useDispatch();
+
+    const [createOpen, setCreateOpen] = useState(false);
+
+    const [editing, setEditing] = useState<Ingredient | null>(null);
+
+
+    useEffect(() => {
+        fetch("/db.json")
+            .then(r => r.json())
+            .then(data => {
+                const ingredients = data.find(
+                    (t: any) =>
+                        t.name === "ingredient"
+                ).data;
+
+                dispatch(
+                    setIngredients(
+                        ingredients.map((i: any) => ({
+                            ...i,
+                            stock: Number(i.stock)
+                        }))
+                    )
+                );
+            });
+    }, [dispatch]);
+
+
+    return (
+        <div className="ingredientsPage">
+            <div className="pageHeader">
+                <div>
+                    <h1>
+                        Ингредиенты
+                    </h1>
+
+                    <p>
+                        Управление складскими компонентами
+                    </p>
+                </div>
+
+
+                <button
+                    className="createButton"
+                    onClick={() => setCreateOpen(true)}
+                >
+                    <FontAwesomeIcon icon={faPlus} />
+
+                    Создать ингредиент
+                </button>
+            </div>
+
+
+            <IngredientTable
+                onEdit={setEditing}
+            />
+
+
+            {createOpen && (
+                <div className="modalOverlay">
+                    <div className="modal">
+                        <button
+                            className="closeButton"
+                            onClick={() => setCreateOpen(false)}
+                        >
+                            ×
+                        </button>
+
+                        <CreateIngredientForm
+                            onClose={() => setCreateOpen(false)}
+                        />
+                    </div>
+                </div>
+            )}
+
+
+            {editing && (
+                <div className="modalOverlay">
+                    <div className="modal">
+                        <button
+                            className="closeButton"
+                            onClick={() => setEditing(null)}
+                        >
+                            ×
+                        </button>
+
+                        <EditIngredientForm
+                            ingredient={editing}
+                            onClose={() => setEditing(null)}
+                        />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+
+==================== FILE: pages\Warehouses\WarehousesPage.scss ====================
+
+*{font-family: Inter;}
+
+.warehousesPage {
+    min-height:100vh;
+    padding:40px;
+    background:#FFF4EC;
+}
+
+
+.pageHeader {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+
+    h1 {
+        margin:0;
+        font-size:28px;
+        color:#3E2F25;
+        margin-bottom: 12px;
+    }
+
+    p {
+        margin-top:6px;
+        color:#7A665D;
+    }
+}
+
+
+.createButton {
+    height:44px;
+    padding:0 22px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#FF9D5C;
+    color:white;
+
+    font-weight:600;
+    cursor:pointer;
+
+
+    &:hover {
+        background:#FF8C2B;
+    }
+}
+
+
+.modalOverlay {
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(74,59,51,.25);
+}
+
+
+.modal {
+    position:relative;
+
+    background:#FFFBF6;
+    border-radius:24px;
+    padding:30px;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.15);
+}
+
+
+.closeButton {
+    position:absolute;
+    right:25px;
+    top:25px;
+
+    border:none;
+    background:none;
+
+    font-size:28px;
+    color:#7A665D;
+
+    cursor:pointer;
+}
+
+
+==================== FILE: pages\Warehouses\WarehousesPage.tsx ====================
+
+import { useEffect, useState } from "react";
+
+import { useDispatch } from "react-redux";
+
+import {
+    setWarehouses,
+    type Warehouse
+} from "@entities/warehouse/models/warehouseSlice";
+
+import CreateWarehouseForm from "@features/warehouse/createWarehouse/CreateWarehouseForm";
+import EditWarehouseForm from "@features/warehouse/editWarehouse/EditWarehouseForm";
+
+import { WarehouseTable } from "@widgets/WarehouseTable/WarehouseTable";
+
+import {
+    FontAwesomeIcon,
+    faPlus
+} from "@shared/icons";
+
+import "./WarehousesPage.scss";
+
+
+export default function WarehousesPage() {
+    const dispatch = useDispatch();
+
+    const [createOpen, setCreateOpen] = useState(false);
+    const [editing, setEditing] = useState<Warehouse | null>(null);
+
+    useEffect(() => {
+        fetch("/db.json")
+            .then(r => r.json())
+            .then(data => {
+                const warehouses = data.find(
+                    (table: any) => table.name === "warehouse"
+                ).data;
+
+                dispatch(
+                    setWarehouses(
+                        warehouses.map((w: any) => ({
+                            ...w,
+                            warehouse_volume: Number(w.warehouse_volume),
+                            max_volume: Number(w.max_volume)
+                        }))
+                    )
+                );
+            });
+    }, [dispatch]);
+
+    return (
+        <div className="warehousesPage">
+            <div className="pageHeader">
+                <div>
+                    <h1>Склады</h1>
+                    <p>Управление складскими помещениями</p>
+                </div>
+
+                <button
+                    className="createButton"
+                    onClick={() => setCreateOpen(true)}
+                >
+                    <FontAwesomeIcon icon={faPlus} />
+                    Создать склад
+                </button>
+            </div>
+
+            <WarehouseTable onEdit={setEditing} />
+
+            {createOpen && (
+                <div className="modalOverlay">
+                    <div className="modal">
+                        <button
+                            className="closeButton"
+                            onClick={() => setCreateOpen(false)}
+                        >
+                            ×
+                        </button>
+
+                        <CreateWarehouseForm
+                            onClose={() => setCreateOpen(false)}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {editing && (
+                <div className="modalOverlay">
+                    <div className="modal">
+                        <button
+                            className="closeButton"
+                            onClick={() => setEditing(null)}
+                        >
+                            ×
+                        </button>
+
+                        <EditWarehouseForm
+                            warehouse={editing}
+                            onClose={() => setEditing(null)}
+                        />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+
 ==================== FILE: shared\api\client\api.ts ====================
 
 export const api = {
@@ -1143,6 +2380,350 @@ export function BatchTable({ onEdit }: Props) {
                             </td>
                         </tr>
                     ))}
+                </tbody>
+            </table>
+        </div>
+    );
+}
+
+
+==================== FILE: widgets\IngredientTable\IngredientTable.scss ====================
+
+.ingredientTableWrapper {
+    background: #FFFBF6;
+
+    border-radius: 20px;
+
+    padding: 25px;
+
+    border: 1px solid #F5D9C7;
+
+    box-shadow:
+        0 15px 40px rgba(74, 59, 51, .08);
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+th {
+    padding: 15px;
+
+    color: #7A665D;
+
+    text-align: left;
+}
+
+
+td {
+    padding: 15px;
+
+    border-top: 1px solid #F5D9C7;
+
+    color: #4A3B33;
+}
+
+
+.edit {
+    margin-right: 10px;
+
+    padding: 8px 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #FFF1A8;
+
+    cursor: pointer;
+}
+
+
+.delete {
+    padding: 8px 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #FFDEDE;
+
+    color: #C0392B;
+
+    cursor: pointer;
+}
+
+
+==================== FILE: widgets\IngredientTable\IngredientTable.tsx ====================
+
+import {
+    useDispatch,
+    useSelector
+} from "react-redux";
+
+import type { RootState } from "@app/store";
+
+import {
+    deleteIngredient,
+    type Ingredient
+} from "@entities/ingredient/models/ingredientSlice";
+
+import {
+    FontAwesomeIcon,
+    faPencil,
+    faTrash
+} from "@shared/icons";
+
+import "./IngredientTable.scss";
+
+
+interface Props {
+    onEdit: (ingredient: Ingredient) => void;
+}
+
+
+export function IngredientTable({
+    onEdit
+}: Props) {
+    const dispatch = useDispatch();
+
+    const ingredients = useSelector(
+        (state: RootState) =>
+            state.ingredient.list
+    );
+
+    const warehouses = useSelector(
+        (state: RootState) =>
+            state.warehouse.list
+    );
+
+
+    return (
+        <div className="ingredientTableWrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Название
+                        </th>
+
+                        <th>
+                            Единица
+                        </th>
+
+                        <th>
+                            Количество
+                        </th>
+
+                        <th>
+                            Склад
+                        </th>
+
+                        <th>
+                            Действия
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {
+                        ingredients.map(i => (
+                            <tr key={i.id}>
+                                <td>
+                                    {i.name}
+                                </td>
+
+                                <td>
+                                    {i.unit}
+                                </td>
+
+                                <td>
+                                    {i.stock}
+                                </td>
+
+                                <td>
+                                    {
+                                        warehouses.find(
+                                            w =>
+                                                w.warehouse_id === i.warehouse_id
+                                        )?.warehouse_location
+                                    }
+                                </td>
+
+                                <td>
+                                    <button
+                                        className="edit"
+                                        onClick={() => onEdit(i)}
+                                    >
+                                        <FontAwesomeIcon icon={faPencil} />
+                                    </button>
+
+                                    <button
+                                        className="delete"
+                                        onClick={() =>
+                                            dispatch(
+                                                deleteIngredient(i.id)
+                                            )
+                                        }
+                                    >
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </div>
+    );
+}
+
+
+==================== FILE: widgets\WarehouseTable\WarehouseTable.scss ====================
+
+.warehouseTableWrapper{
+    background:#FFFBF6;
+    border-radius:20px;
+    padding:25px;
+    border:1px solid #F5D9C7;
+    box-shadow: 0 15px 40px rgba(74,59,51,.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    padding:15px;
+    text-align:left;
+    color:#7A665D;
+}
+
+td{
+    padding:15px;
+    border-top:1px solid #F5D9C7;
+    color:#4A3B33;
+}
+
+.edit{
+    margin-right:10px;
+    padding:8px 14px;
+    border:none;
+    border-radius:10px;
+    background:#FFF1A8;
+    cursor:pointer;
+
+}
+
+.delete{
+    padding:8px 14px;
+    border:none;
+    border-radius:10px;
+    background:#FFDEDE;
+    color:#C0392B;
+    cursor:pointer;
+}
+
+
+==================== FILE: widgets\WarehouseTable\WarehouseTable.tsx ====================
+
+import { useDispatch, useSelector } from "react-redux";
+
+import type { RootState } from "@app/store";
+
+import {
+    deleteWarehouse,
+    type Warehouse
+} from "@entities/warehouse/models/warehouseSlice";
+
+import {
+    FontAwesomeIcon,
+    faPencil,
+    faTrash
+} from "@shared/icons";
+
+import "./WarehouseTable.scss";
+
+
+interface Props {
+    onEdit: (warehouse: Warehouse) => void;
+}
+
+
+export function WarehouseTable({ onEdit }: Props) {
+    const dispatch = useDispatch();
+
+    const warehouses = useSelector(
+        (state: RootState) => state.warehouse.list
+    );
+
+    return (
+        <div className="warehouseTableWrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Расположение
+                        </th>
+
+                        <th>
+                            Текущий объем
+                        </th>
+
+                        <th>
+                            Максимальный объем
+                        </th>
+
+                        <th>
+                            Действия
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {
+                        warehouses.map(warehouse => (
+                            <tr key={warehouse.warehouse_id}>
+                                <td>
+                                    {warehouse.warehouse_location}
+                                </td>
+
+                                <td>
+                                    {warehouse.warehouse_volume}
+                                </td>
+
+                                <td>
+                                    {warehouse.max_volume}
+                                </td>
+
+                                <td>
+                                    <button
+                                        className="edit"
+                                        onClick={() => onEdit(warehouse)}
+                                    >
+                                        <FontAwesomeIcon icon={faPencil} />
+                                    </button>
+
+                                    <button
+                                        className="delete"
+                                        onClick={() =>
+                                            dispatch(
+                                                deleteWarehouse(
+                                                    warehouse.warehouse_id
+                                                )
+                                            )
+                                        }
+                                    >
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    }
                 </tbody>
             </table>
         </div>

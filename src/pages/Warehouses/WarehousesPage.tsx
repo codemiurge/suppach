@@ -26,28 +26,8 @@ export default function WarehousesPage() {
     const [createOpen, setCreateOpen] = useState(false);
     const [editing, setEditing] = useState<Warehouse | null>(null);
 
-    useEffect(() => {
-        fetch("/db.json")
-            .then(r => r.json())
-            .then(data => {
-                const warehouses = data.find(
-                    (table: any) => table.name === "warehouse"
-                ).data;
-
-                dispatch(
-                    setWarehouses(
-                        warehouses.map((w: any) => ({
-                            ...w,
-                            warehouse_volume: Number(w.warehouse_volume),
-                            max_volume: Number(w.max_volume)
-                        }))
-                    )
-                );
-            });
-    }, [dispatch]);
-
     return (
-        <div className="batchesPage">
+        <div className="warehousesPage">
             <div className="pageHeader">
                 <div>
                     <h1>Склады</h1>
