@@ -1,22 +1,11 @@
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 
-import {
-    setWarehouses
-} from "@entities/warehouse/models/warehouseSlice";
-
-import {
-    setIngredients
-} from "@entities/ingredient/models/ingredientSlice";
-
-import {
-    setRecipes
-} from "@entities/recipe/models/recipeSlice";
-
-import {
-    setRecipeIngredients
-} from "@entities/recipe/models/recipeIngredientSlice";
-
+import { setWarehouses } from "@entities/warehouse/models/warehouseSlice";
+import { setIngredients } from "@entities/ingredient/models/ingredientSlice";
+import { setRecipes } from "@entities/recipe/models/recipeSlice";
+import { setRecipeIngredients } from "@entities/recipe/models/recipeIngredientSlice";
+import { setBatches } from "@entities/batch/models/batchSlice";
 
 export default function AppInitializer(){
     const dispatch=useDispatch();
@@ -41,11 +30,9 @@ export default function AppInitializer(){
                     )
                 );
 
-
                 const ingredients=data.find(
                     (t:any)=>t.name==="ingredient"
                 )?.data ?? [];
-
 
                 dispatch(
                     setIngredients(
@@ -59,7 +46,7 @@ export default function AppInitializer(){
                 );
 
                 const recipes=data.find(
-                    (t:any)=>t.name==="recipe"
+                    (t:any)=>t.name ==="recipe"
                 )?.data ?? [];
 
 
@@ -79,6 +66,22 @@ export default function AppInitializer(){
                         recipeIngredients.map((r:any)=>({
                             ...r,
                             amount_mg:Number(r.amount_mg)
+                        }))
+                    )
+                );
+
+
+                const batches = data.find(
+                    (table: any) => table.name === "batch"
+                ).data;
+
+                dispatch(
+                    setBatches(
+                        batches.map((batch: any) => ({
+                            ...batch,
+                            quantity_units: Number(batch.quantity_units),
+                            capsules_per_unit: Number(batch.capsules_per_unit),
+                            total_capsules: Number(batch.total_capsules),
                         }))
                     )
                 );

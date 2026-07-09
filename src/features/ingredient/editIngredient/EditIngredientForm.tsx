@@ -82,7 +82,7 @@ export default function EditIngredientForm({
 
 
             <label>
-                Единица
+                Единица измерения
             </label>
 
             <input

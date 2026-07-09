@@ -26,29 +26,6 @@ export default function BatchesPage() {
     const [createOpen, setCreateOpen] = useState(false);
     const [editingBatch, setEditingBatch] = useState<Batch | null>(null);
 
-    useEffect(() => {
-        fetch("/db.json")
-            .then(res => res.json())
-            .then(data => {
-
-                const batches = data.find(
-                    (table: any) => table.name === "batch"
-                ).data;
-
-                dispatch(
-                    setBatches(
-                        batches.map((batch: any) => ({
-                            ...batch,
-                            quantity_units: Number(batch.quantity_units),
-                            capsules_per_unit: Number(batch.capsules_per_unit),
-                            total_capsules: Number(batch.total_capsules),
-                        }))
-                    )
-                );
-            });
-
-    }, [dispatch]);
-
     return (
         <div className="batchesPage">
             <div className="pageHeader">

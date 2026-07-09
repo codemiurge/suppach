@@ -17,7 +17,7 @@ import "./BatchTable.scss";
 
 
 interface Props {
-    onEdit: (batch: Batch) => void;
+    onEdit: (batch: Batch | null) => void;
 }
 
 

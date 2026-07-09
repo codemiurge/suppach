@@ -1,105 +1,179 @@
 import React, { useState } from "react";
 
-import { useDispatch } from "react-redux";
+import {
+    useDispatch,
+    useSelector
+} from "react-redux";
 
 import {
     addBatch,
     BATCH_STATUSES,
-    type BatchStatus,
+    type BatchStatus
 } from "@entities/batch/models/batchSlice";
 
+import type { RootState } from "@app/store";
 import "./createBatchForm.scss";
-
 
 interface Props {
     onClose: () => void;
 }
 
-
-export default function CreateBatchForm({ onClose }: Props) {
+export default function CreateBatchForm({
+    onClose
+}: Props) {
     const dispatch = useDispatch();
+
+    const recipes = useSelector(
+        (state: RootState) =>
+            state.recipe.list
+    );
 
     const [name, setName] = useState("");
     const [status, setStatus] = useState<BatchStatus>("В работе");
     const [quantity, setQuantity] = useState(0);
     const [capsulesPerUnit, setCapsulesPerUnit] = useState(10);
+    const [recipeId, setRecipeId] = useState<string | null>(null);
 
-    function handleSubmit(e: React.FormEvent) {
+
+    function handleSubmit(
+        e: React.FormEvent
+    ) {
         e.preventDefault();
-
 
         dispatch(
             addBatch({
                 id: crypto.randomUUID(),
                 name,
                 status,
-                recipe_id: null,
+                recipe_id: recipeId,
                 quantity_units: quantity,
                 capsules_per_unit: capsulesPerUnit,
-                total_capsules: quantity * capsulesPerUnit,
+                total_capsules: quantity * capsulesPerUnit
             })
         );
 
         setName("");
         setQuantity(0);
         setCapsulesPerUnit(10);
-
+        setRecipeId(null);
         onClose();
     }
-
 
     return (
         <form
             className="createBatchForm"
             onSubmit={handleSubmit}
         >
-            <h2>Создание партии</h2>
-            <label>Название партии</label>
+            <h2>
+                Создание партии
+            </h2>
+
+
+            <label>
+                Название партии
+            </label>
 
             <input
                 value={name}
                 required
                 placeholder="Например: Магний бисглицинат"
-                onChange={e => setName(e.target.value)}
+                onChange={
+                    e => setName(e.target.value)
+                }
             />
 
-            <label>Количество единиц</label>
+            <label>
+                Рецептура
+            </label>
+
+            <select
+                value={recipeId ?? ""}
+                onChange={
+                    e =>
+                        setRecipeId(
+                            e.target.value || null
+                        )
+                }
+            >
+                <option value="">
+                    Без рецептуры
+                </option>
+
+                {
+                    recipes.map(recipe => (
+                        <option
+                            key={recipe.recipe_id}
+                            value={recipe.recipe_id}
+                        >
+                            {recipe.name}
+                        </option>
+                    ))
+                }
+            </select>
+
+            <label>
+                Количество единиц
+            </label>
 
             <input
                 type="number"
                 value={quantity}
                 required
                 min={0}
-                onChange={e => setQuantity(Number(e.target.value))}
+                onChange={
+                    e =>
+                        setQuantity(
+                            Number(e.target.value)
+                        )
+                }
             />
 
 
-            <label>Капсул в единице</label>
+            <label>
+                Капсул в единице
+            </label>
 
             <input
                 type="number"
                 value={capsulesPerUnit}
                 required
                 min={0}
-                onChange={e => setCapsulesPerUnit(Number(e.target.value))}
+                onChange={
+                    e =>
+                        setCapsulesPerUnit(
+                            Number(e.target.value)
+                        )
+                }
             />
 
-            <label>Статус</label>
+            <label>
+                Статус
+            </label>
+
             <select
                 value={status}
-                onChange={e => setStatus(e.target.value as BatchStatus)}
+                onChange={
+                    e =>
+                        setStatus(
+                            e.target.value as BatchStatus
+                        )
+                }
             >
-                {BATCH_STATUSES.map(status => (
-                    <option
-                        key={status}
-                        value={status}
-                    >
-                        {status}
-                    </option>
-                ))}
+                {
+                    BATCH_STATUSES.map(status => (
+                        <option
+                            key={status}
+                            value={status}
+                        >
+                            {status}
+                        </option>
+                    ))
+                }
             </select>
 
-            <button>Создать партию</button>
+            <button>
+                Создать партию
+            </button>
         </form>
     );
 }

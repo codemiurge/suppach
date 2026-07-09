@@ -30,28 +30,6 @@ export default function IngredientsPage() {
 
     const [editing, setEditing] = useState<Ingredient | null>(null);
 
-
-    useEffect(() => {
-        fetch("/db.json")
-            .then(r => r.json())
-            .then(data => {
-                const ingredients = data.find(
-                    (t: any) =>
-                        t.name === "ingredient"
-                ).data;
-
-                dispatch(
-                    setIngredients(
-                        ingredients.map((i: any) => ({
-                            ...i,
-                            stock: Number(i.stock)
-                        }))
-                    )
-                );
-            });
-    }, [dispatch]);
-
-
     return (
         <div className="ingredientsPage">
             <div className="pageHeader">
