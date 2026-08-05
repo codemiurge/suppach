@@ -1,9 +1,9 @@
 @import url(./normalize.css);
 
-.hidden{
+.hidden {
     display: none;
 }
 
-*{
+* {
     font-family: Inter;
 }

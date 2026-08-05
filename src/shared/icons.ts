@@ -1,4 +1,4 @@
-export { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+export { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export {
     faPlus,
@@ -17,5 +17,5 @@ export {
     faBell,
     faHourglass,
     faCheck,
-    faTimes
-} from "@fortawesome/free-solid-svg-icons";
+    faTimes,
+} from '@fortawesome/free-solid-svg-icons';

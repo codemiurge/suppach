@@ -1,27 +1,17 @@
-import {
-    useEffect,
-    useState
-} from "react";
+import { useEffect, useState } from 'react';
 
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
-import {
-    setIngredients,
-    type Ingredient
-} from "@entities/ingredient/models/ingredientSlice";
+import { setIngredients, type Ingredient } from '@entities/ingredient/models/ingredientSlice';
 
-import CreateIngredientForm from "@features/ingredient/createIngredient/CreateIngredientForm";
-import EditIngredientForm from "@features/ingredient/editIngredient/EditIngredientForm";
+import CreateIngredientForm from '@features/ingredient/createIngredient/CreateIngredientForm';
+import EditIngredientForm from '@features/ingredient/editIngredient/EditIngredientForm';
 
-import { IngredientTable } from "@widgets/IngredientTable/IngredientTable";
+import { IngredientTable } from '@widgets/IngredientTable/IngredientTable';
 
-import {
-    FontAwesomeIcon,
-    faPlus
-} from "@shared/icons";
+import { FontAwesomeIcon, faPlus } from '@shared/icons';
 
-import "./IngredientsPage.scss";
-
+import './IngredientsPage.scss';
 
 export default function IngredientsPage() {
     const dispatch = useDispatch();
@@ -34,64 +24,39 @@ export default function IngredientsPage() {
         <div className="ingredientsPage">
             <div className="pageHeader">
                 <div>
-                    <h1>
-                        Ингредиенты
-                    </h1>
+                    <h1>Ингредиенты</h1>
 
-                    <p>
-                        Управление складскими компонентами
-                    </p>
+                    <p>Управление складскими компонентами</p>
                 </div>
 
-
-                <button
-                    className="createButton"
-                    onClick={() => setCreateOpen(true)}
-                >
+                <button className="createButton" onClick={() => setCreateOpen(true)}>
                     <FontAwesomeIcon icon={faPlus} />
-
                     Создать ингредиент
                 </button>
             </div>
 
-
-            <IngredientTable
-                onEdit={setEditing}
-            />
-
+            <IngredientTable onEdit={setEditing} />
 
             {createOpen && (
                 <div className="modalOverlay">
                     <div className="modal">
-                        <button
-                            className="closeButton"
-                            onClick={() => setCreateOpen(false)}
-                        >
+                        <button className="closeButton" onClick={() => setCreateOpen(false)}>
                             ×
                         </button>
 
-                        <CreateIngredientForm
-                            onClose={() => setCreateOpen(false)}
-                        />
+                        <CreateIngredientForm onClose={() => setCreateOpen(false)} />
                     </div>
                 </div>
             )}
 
-
             {editing && (
                 <div className="modalOverlay">
                     <div className="modal">
-                        <button
-                            className="closeButton"
-                            onClick={() => setEditing(null)}
-                        >
+                        <button className="closeButton" onClick={() => setEditing(null)}>
                             ×
                         </button>
 
-                        <EditIngredientForm
-                            ingredient={editing}
-                            onClose={() => setEditing(null)}
-                        />
+                        <EditIngredientForm ingredient={editing} onClose={() => setEditing(null)} />
                     </div>
                 </div>
             )}

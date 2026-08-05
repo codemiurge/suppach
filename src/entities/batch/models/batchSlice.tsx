@@ -1,17 +1,14 @@
-import {
-    createSlice,
-    type PayloadAction,
-} from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export const BATCH_STATUSES = [
-    "Ожидание проверки",
-    "В работе",
-    "Допущена",
-    "Отклонена",
-    "Утилизация",
+    'Ожидание проверки',
+    'В работе',
+    'Допущена',
+    'Отклонена',
+    'Утилизация',
 ] as const;
 
-export type BatchStatus = typeof BATCH_STATUSES[number];
+export type BatchStatus = (typeof BATCH_STATUSES)[number];
 
 export interface Batch {
     id: string;
@@ -32,7 +29,7 @@ const initialState: BatchState = {
 };
 
 const batchSlice = createSlice({
-    name: "batch",
+    name: 'batch',
 
     initialState,
 
@@ -46,9 +43,7 @@ const batchSlice = createSlice({
         },
 
         updateBatch(state, action: PayloadAction<Batch>) {
-            const index = state.list.findIndex(
-                batch => batch.id === action.payload.id
-            );
+            const index = state.list.findIndex((batch) => batch.id === action.payload.id);
 
             if (index !== -1) {
                 state.list[index] = action.payload;
@@ -56,18 +51,11 @@ const batchSlice = createSlice({
         },
 
         deleteBatch(state, action: PayloadAction<string>) {
-            state.list = state.list.filter(
-                batch => batch.id !== action.payload
-            );
+            state.list = state.list.filter((batch) => batch.id !== action.payload);
         },
     },
 });
 
-export const {
-    setBatches,
-    addBatch,
-    updateBatch,
-    deleteBatch,
-} = batchSlice.actions;
+export const { setBatches, addBatch, updateBatch, deleteBatch } = batchSlice.actions;
 
 export default batchSlice.reducer;

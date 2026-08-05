@@ -1,24 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
-import {
-    setWarehouses,
-    type Warehouse
-} from "@entities/warehouse/models/warehouseSlice";
+import { setWarehouses, type Warehouse } from '@entities/warehouse/models/warehouseSlice';
 
-import CreateWarehouseForm from "@features/warehouse/createWarehouse/CreateWarehouseForm";
-import EditWarehouseForm from "@features/warehouse/editWarehouse/EditWarehouseForm";
+import CreateWarehouseForm from '@features/warehouse/createWarehouse/CreateWarehouseForm';
+import EditWarehouseForm from '@features/warehouse/editWarehouse/EditWarehouseForm';
 
-import { WarehouseTable } from "@widgets/WarehouseTable/WarehouseTable";
+import { WarehouseTable } from '@widgets/WarehouseTable/WarehouseTable';
 
-import {
-    FontAwesomeIcon,
-    faPlus
-} from "@shared/icons";
+import { FontAwesomeIcon, faPlus } from '@shared/icons';
 
-import "./WarehousesPage.scss";
-
+import './WarehousesPage.scss';
 
 export default function WarehousesPage() {
     const dispatch = useDispatch();
@@ -34,10 +27,7 @@ export default function WarehousesPage() {
                     <p>Управление складскими помещениями</p>
                 </div>
 
-                <button
-                    className="createButton"
-                    onClick={() => setCreateOpen(true)}
-                >
+                <button className="createButton" onClick={() => setCreateOpen(true)}>
                     <FontAwesomeIcon icon={faPlus} />
                     Создать склад
                 </button>
@@ -48,16 +38,11 @@ export default function WarehousesPage() {
             {createOpen && (
                 <div className="modalOverlay">
                     <div className="modal">
-                        <button
-                            className="closeButton"
-                            onClick={() => setCreateOpen(false)}
-                        >
+                        <button className="closeButton" onClick={() => setCreateOpen(false)}>
                             ×
                         </button>
 
-                        <CreateWarehouseForm
-                            onClose={() => setCreateOpen(false)}
-                        />
+                        <CreateWarehouseForm onClose={() => setCreateOpen(false)} />
                     </div>
                 </div>
             )}
@@ -65,17 +50,11 @@ export default function WarehousesPage() {
             {editing && (
                 <div className="modalOverlay">
                     <div className="modal">
-                        <button
-                            className="closeButton"
-                            onClick={() => setEditing(null)}
-                        >
+                        <button className="closeButton" onClick={() => setEditing(null)}>
                             ×
                         </button>
 
-                        <EditWarehouseForm
-                            warehouse={editing}
-                            onClose={() => setEditing(null)}
-                        />
+                        <EditWarehouseForm warehouse={editing} onClose={() => setEditing(null)} />
                     </div>
                 </div>
             )}

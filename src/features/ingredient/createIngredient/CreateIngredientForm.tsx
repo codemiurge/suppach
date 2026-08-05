@@ -1,40 +1,26 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import {
-    useDispatch,
-    useSelector
-} from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
-import type { RootState } from "@app/store";
+import type { RootState } from '@app/store';
 
-import {
-    addIngredient
-} from "@entities/ingredient/models/ingredientSlice";
+import { addIngredient } from '@entities/ingredient/models/ingredientSlice';
 
-import "./CreateIngredientForm.scss";
-
+import './CreateIngredientForm.scss';
 
 interface Props {
     onClose: () => void;
 }
 
-
-export default function CreateIngredientForm({
-    onClose
-}: Props) {
+export default function CreateIngredientForm({ onClose }: Props) {
     const dispatch = useDispatch();
 
-    const warehouses = useSelector(
-        (state: RootState) =>
-            state.warehouse.list
-    );
+    const warehouses = useSelector((state: RootState) => state.warehouse.list);
 
-
-    const [name, setName] = useState("");
-    const [unit, setUnit] = useState("г");
+    const [name, setName] = useState('');
+    const [unit, setUnit] = useState('г');
     const [stock, setStock] = useState(0);
-    const [warehouseId, setWarehouseId] = useState("");
-
+    const [warehouseId, setWarehouseId] = useState('');
 
     function submit(e: React.FormEvent) {
         e.preventDefault();
@@ -45,97 +31,56 @@ export default function CreateIngredientForm({
                 name,
                 unit,
                 stock,
-                warehouse_id: warehouseId
-            })
+                warehouse_id: warehouseId,
+            }),
         );
 
-        setName("");
+        setName('');
         setStock(0);
 
         onClose();
     }
 
-
     return (
-        <form
-            className="createIngredientForm"
-            onSubmit={submit}
-        >
-            <h2>
-                Создание ингредиента
-            </h2>
+        <form className="createIngredientForm" onSubmit={submit}>
+            <h2>Создание ингредиента</h2>
 
-
-            <label>
-                Название
-            </label>
+            <label>Название</label>
 
             <input
                 value={name}
                 placeholder="Например: Магний"
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 required
             />
 
+            <label>Единица измерения</label>
 
-            <label>
-                Единица измерения
-            </label>
+            <input value={unit} onChange={(e) => setUnit(e.target.value)} required />
 
-            <input
-                value={unit}
-                onChange={e => setUnit(e.target.value)}
-                required
-            />
-
-
-            <label>
-                Количество на складе
-            </label>
+            <label>Количество на складе</label>
 
             <input
                 type="number"
                 min={0}
                 required
                 value={stock}
-                onChange={e =>
-                    setStock(
-                        Number(e.target.value)
-                    )
-                }
+                onChange={(e) => setStock(Number(e.target.value))}
             />
 
+            <label>Склад</label>
 
-            <label>
-                Склад
-            </label>
+            <select value={warehouseId} onChange={(e) => setWarehouseId(e.target.value)}>
+                <option value="">Выберите склад</option>
 
-            <select
-                value={warehouseId}
-                onChange={e =>
-                    setWarehouseId(e.target.value)
-                }
-            >
-                <option value="">
-                    Выберите склад
-                </option>
-
-                {
-                    warehouses.map(w => (
-                        <option
-                            key={w.warehouse_id}
-                            value={w.warehouse_id}
-                        >
-                            {w.warehouse_location}
-                        </option>
-                    ))
-                }
+                {warehouses.map((w) => (
+                    <option key={w.warehouse_id} value={w.warehouse_id}>
+                        {w.warehouse_location}
+                    </option>
+                ))}
             </select>
 
-
-            <button>
-                Создать ингредиент
-            </button>
+            <button>Создать ингредиент</button>
         </form>
     );
 }

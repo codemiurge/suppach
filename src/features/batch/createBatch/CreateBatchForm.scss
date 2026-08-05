@@ -1,64 +1,58 @@
 .createBatchForm {
-    width:380px;
+    width: 380px;
 
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 
     h2 {
-        margin-bottom:15px;
-        font-size:22px;
-        color:#4A3B33;
+        margin-bottom: 15px;
+        font-size: 22px;
+        color: #4a3b33;
     }
-
 
     label {
-        font-size:14px;
-        font-weight:600;
-        color:#7A665D;
+        font-size: 14px;
+        font-weight: 600;
+        color: #7a665d;
     }
-
 
     input,
     select {
-        padding:12px 14px;
+        padding: 12px 14px;
 
-        border:1px solid #F5D9C7;
-        border-radius:12px;
+        border: 1px solid #f5d9c7;
+        border-radius: 12px;
 
-        background:#FFFBF6;
+        background: #fffbf6;
 
-        font-size:15px;
-        color:#4A3B33;
-
+        font-size: 15px;
+        color: #4a3b33;
 
         &:focus {
-            outline:none;
-            border-color:#FF9D5C;
-            box-shadow:0 0 0 3px rgba(255,157,92,.2);
+            outline: none;
+            border-color: #ff9d5c;
+            box-shadow: 0 0 0 3px rgba(255, 157, 92, 0.2);
         }
     }
 
-
     button {
-        margin-top:15px;
+        margin-top: 15px;
 
-        height:44px;
+        height: 44px;
 
-        border:none;
-        border-radius:10px;
+        border: none;
+        border-radius: 10px;
 
-        background:#FF9D5C;
-        color:white;
+        background: #ff9d5c;
+        color: white;
 
-        font-weight:600;
+        font-weight: 600;
 
-        cursor:pointer;
-
+        cursor: pointer;
 
         &:hover {
-            background:#FF8C2B;
+            background: #ff8c2b;
         }
     }
 }

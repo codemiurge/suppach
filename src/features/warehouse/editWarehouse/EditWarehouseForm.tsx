@@ -1,109 +1,51 @@
-import React,{useState} from "react";
+import React, { useState } from 'react';
 
-import {useDispatch} from "react-redux";
+import { useDispatch } from 'react-redux';
 
-import {
+import { updateWarehouse, type Warehouse } from '@entities/warehouse/models/warehouseSlice';
 
-    updateWarehouse,
+import './EditWarehouseForm.scss';
 
-    type Warehouse
+interface Props {
+    warehouse: Warehouse;
 
+    onClose: () => void;
 }
-
-from "@entities/warehouse/models/warehouseSlice";
-
-
-import "./EditWarehouseForm.scss";
-
-
-interface Props{
-
-    warehouse:Warehouse;
-
-    onClose:()=>void;
-
-}
-
-
 
 export default function EditWarehouseForm({
-
     warehouse,
 
-    onClose
-
-}:Props){
-
-
+    onClose,
+}: Props) {
     const dispatch = useDispatch();
 
+    const [location, setLocation] = useState(warehouse.warehouse_location);
 
-    const [location,setLocation] =
-        useState(
-            warehouse.warehouse_location
-        );
+    const [maxVolume, setMaxVolume] = useState(warehouse.max_volume);
 
-
-    const [maxVolume,setMaxVolume] =
-        useState(
-            warehouse.max_volume
-        );
-
-
-
-    function submit(
-        e:React.FormEvent
-    ){
-
+    function submit(e: React.FormEvent) {
         e.preventDefault();
 
-
         dispatch(
-
             updateWarehouse({
-
                 ...warehouse,
 
-                warehouse_location:
-                    location,
+                warehouse_location: location,
 
-                max_volume:
-                    maxVolume
-
-            })
-
+                max_volume: maxVolume,
+            }),
         );
 
-
         onClose();
-
     }
 
-
-
     return (
-
-        <form
-            className="editWarehouseForm"
-            onSubmit={submit}
-        >
-
-            <h2>
-                Редактирование склада
-            </h2>
-
+        <form className="editWarehouseForm" onSubmit={submit}>
+            <h2>Редактирование склада</h2>
 
             <label>Расположение</label>
 
-            <input
-                value={location}
-                required
-                onChange={
-                    e=>setLocation(
-                        e.target.value
-                    )
-                }
-            />
+            <input value={location} required onChange={(e) => setLocation(e.target.value)} />
 
             <label>Максимальный объем</label>
 
@@ -112,17 +54,10 @@ export default function EditWarehouseForm({
                 min={0}
                 value={maxVolume}
                 required
-                onChange={
-                    e=>setMaxVolume(
-                        Number(e.target.value)
-                    )
-                }
+                onChange={(e) => setMaxVolume(Number(e.target.value))}
             />
 
             <button>Сохранить изменения</button>
-
         </form>
-
     );
-
 }

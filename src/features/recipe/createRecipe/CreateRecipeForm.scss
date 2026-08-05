@@ -1,87 +1,82 @@
-.recipeForm{
-    width:430px;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
+.recipeForm {
+    width: 430px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 
-    h2{
-        color:#4A3B33;
-        margin-bottom:10px;
+    h2 {
+        color: #4a3b33;
+        margin-bottom: 10px;
     }
 
-    label{
-        color:#7A665D;
-        font-weight:600;
+    label {
+        color: #7a665d;
+        font-weight: 600;
     }
 
     input,
-    select{
-        padding:12px;
-        border-radius:12px;
-        border:1px solid #F5D9C7;
-        background:#FFFBF6;
-        color:#4A3B33;
+    select {
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid #f5d9c7;
+        background: #fffbf6;
+        color: #4a3b33;
     }
 }
 
+.ingredientsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-.ingredientsHeader{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    h3{
-        color:#4A3B33;
+    h3 {
+        color: #4a3b33;
     }
 }
 
-
-.addRow{
-    width:36px;
-    height:36px;
-    border:none;
-    border-radius:10px;
-    background:#FF9D5C;
-    color:white;
-    font-size:22px;
-    cursor:pointer;
+.addRow {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 10px;
+    background: #ff9d5c;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
 }
 
+.ingredientRow {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 
-.ingredientRow{
-    display:flex;
-    gap:8px;
-    align-items:center;
-
-    select{
-        flex:1;
+    select {
+        flex: 1;
     }
 
-    input{
-        width:80px;
+    input {
+        width: 80px;
     }
 }
 
-
-.removeRow{
-    width:36px;
-    height:36px;
-    border:none;
-    border-radius:10px;
-    background:#FFDEDE;
-    color:#C0392B;
-    font-size:20px;
-    cursor:pointer;
+.removeRow {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 10px;
+    background: #ffdede;
+    color: #c0392b;
+    font-size: 20px;
+    cursor: pointer;
 }
 
-
-.submitButton{
-    height:44px;
-    margin-top:15px;
-    border:none;
-    border-radius:10px;
-    background:#FF9D5C;
-    color:white;
-    font-weight:600;
-    cursor:pointer;
+.submitButton {
+    height: 44px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #ff9d5c;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
 }

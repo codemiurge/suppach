@@ -1,40 +1,35 @@
 .ingredientTableWrapper {
-    background: #FFFBF6;
+    background: #fffbf6;
 
     border-radius: 20px;
 
     padding: 25px;
 
-    border: 1px solid #F5D9C7;
+    border: 1px solid #f5d9c7;
 
-    box-shadow:
-        0 15px 40px rgba(74, 59, 51, .08);
+    box-shadow: 0 15px 40px rgba(74, 59, 51, 0.08);
 }
-
 
 table {
     width: 100%;
     border-collapse: collapse;
 }
 
-
 th {
     padding: 15px;
 
-    color: #7A665D;
+    color: #7a665d;
 
     text-align: left;
 }
 
-
 td {
     padding: 15px;
 
-    border-top: 1px solid #F5D9C7;
+    border-top: 1px solid #f5d9c7;
 
-    color: #4A3B33;
+    color: #4a3b33;
 }
-
 
 .edit {
     margin-right: 10px;
@@ -45,11 +40,10 @@ td {
 
     border-radius: 10px;
 
-    background: #FFF1A8;
+    background: #fff1a8;
 
     cursor: pointer;
 }
-
 
 .delete {
     padding: 8px 14px;
@@ -58,9 +52,9 @@ td {
 
     border-radius: 10px;
 
-    background: #FFDEDE;
+    background: #ffdede;
 
-    color: #C0392B;
+    color: #c0392b;
 
     cursor: pointer;
 }
