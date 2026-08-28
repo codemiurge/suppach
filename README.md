@@ -1,73 +1,214 @@
-# React + TypeScript + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# SUPPACH
 
-Currently, two official plugins are available:
+### **SUPPlement Administration & Control Hub**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Веб-информационная система для управления производством БАД.
 
-## React Compiler
+<br>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react\&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript\&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite\&logoColor=white)](https://vite.dev/)
+[![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-2-764ABC?logo=redux\&logoColor=white)](https://redux-toolkit.js.org/)
+[![SCSS](https://img.shields.io/badge/SCSS-Styles-CC6699?logo=sass\&logoColor=white)](https://sass-lang.com/)
 
-## Expanding the ESLint configuration
+<br>
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**[🌐 Открыть демо](https://codemiurge.github.io/suppach/)**
 
-```js
-export default defineConfig([
-    globalIgnores(['dist']),
-    {
-        files: ['**/*.{ts,tsx}'],
-        extends: [
-            // Other configs...
+</div>
 
-            // Remove tseslint.configs.recommended and replace with this
-            tseslint.configs.recommendedTypeChecked,
-            // Alternatively, use this for stricter rules
-            tseslint.configs.strictTypeChecked,
-            // Optionally, add this for stylistic rules
-            tseslint.configs.stylisticTypeChecked,
+---
 
-            // Other configs...
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ['./tsconfig.node.json', './tsconfig.app.json'],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-]);
+## О проекте
+
+**SUPPACH (SUPPlement Administration & Control Hub)** — информационная система, предназначенная для управления основными процессами, связанными с производством супплементной продукции.
+
+Приложение объединяет работу с:
+
+* производственными партиями;
+* ингредиентами;
+* рецептурами;
+* составами рецептур;
+* складскими запасами;
+* производственными ресурсами.
+
+Основная идея проекта — предоставить единый интерфейс для работы с взаимосвязанными производственными данными.
+
+---
+
+## Предпросмотр
+
+### Dashboard
+
+<img width="1323" height="565" alt="image" src="https://github.com/user-attachments/assets/7a91ac89-c02c-4b2f-acf2-9b24457a547e" />
+
+Главная панель приложения предоставляет обзор основных производственных сущностей и позволяет быстро перейти к нужному разделу.
+
+---
+
+### Batches
+
+<img width="1547" height="727" alt="ezgif-7893ebb3a24ab082" src="https://github.com/user-attachments/assets/32d9937a-ca44-427e-938c-f625984a6dfe" />
+
+Раздел **Batches** предназначен для управления производственными партиями.
+
+Здесь можно просматривать и редактировать информацию о партиях, включая количество производимой продукции и связанные с ней данные.
+
+---
+
+## Возможности
+
+### 📦 Production batches
+
+* создание производственных партий;
+* редактирование партий;
+* просмотр производственных параметров;
+* работа со статусами;
+* расчёт количества продукции.
+
+### 🧪 Ingredients
+
+* каталог ингредиентов;
+* информация об остатках;
+* контроль доступного количества;
+* использование ингредиентов в рецептурах.
+
+### ⚗️ Recipes
+
+* создание рецептур;
+* просмотр состава;
+* связь рецептур с ингредиентами;
+* указание необходимого количества компонентов.
+
+### 🏭 Warehouses
+
+* управление складами;
+* контроль текущего объёма;
+* контроль максимальной вместимости;
+* расчёт доступного пространства.
+
+---
+
+## Архитектура
+
+Проект построен с использованием подхода **Feature-Sliced Design (FSD)**.
+
+```text
+        src/
+        │
+        ├── app/
+        │   ├── router.tsx
+        │   └── ...
+        │
+        ├── entities/
+        │   ├── batch/
+        │   ├── ingredient/
+        │   ├── recipe/
+        │   └── warehouse/
+        │
+        ├── features/
+        │   └── batch/
+        │       ├── createBatch/
+        │       └── editBatch/
+        │
+        ├── pages/
+        │   ├── Batches/
+        │   ├── Ingredients/
+        │   ├── Recipes/
+        │   ├── Warehouses/
+        │   └── ...
+        │
+        ├── widgets/
+        │   └── ...
+        │
+        └── main.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Данные загружаются при инициализации приложения и преобразуются в соответствующие Redux slices.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+Упрощённая схема:
 
-export default defineConfig([
-    globalIgnores(['dist']),
-    {
-        files: ['**/*.{ts,tsx}'],
-        extends: [
-            // Other configs...
-            // Enable lint rules for React
-            reactX.configs['recommended-typescript'],
-            // Enable lint rules for React DOM
-            reactDom.configs.recommended,
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ['./tsconfig.node.json', './tsconfig.app.json'],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-]);
+```text
+                        ┌──────────────┐
+                        │   db.json    │
+                        └──────┬───────┘
+                               │
+                               ▼
+                      ┌─────────────────┐
+                      │ AppInitializer  │
+                      └────────┬────────┘
+                               │
+                               ▼
+                      ┌─────────────────┐
+                      │  Redux Store    │
+                      └────────┬────────┘
+                               │
+              ┌────────────────┼────────────────┐
+              ▼                ▼                ▼
+         ┌─────────┐      ┌─────────┐      ┌───────────┐
+         │ Batches │      │ Recipes │      │ Warehouses│
+         └─────────┘      └─────────┘      └───────────┘
+                               │
+                               ▼
+                        ┌─────────────┐
+                        │ Ingredients │
+                        └─────────────┘
 ```
+
+---
+
+## Технологический стек
+
+### Frontend
+
+* **React** — пользовательский интерфейс
+* **TypeScript** — типизация
+* **Vite** — сборка и сервер разработки
+* **React Router** — маршрутизация
+* **Redux Toolkit** — управление состоянием
+* **SCSS** — стилизация
+
+---
+
+## Основные сущности
+
+| Сущность            | Описание                        |
+| ------------------- | ------------------------------- |
+| `warehouse`         | Склады и их вместимость         |
+| `ingredient`        | Ингредиенты и складские остатки |
+| `recipe`            | Рецептуры продукции             |
+| `recipe_ingredient` | Состав рецептур                 |
+| `batch`             | Производственные партии         |
+
+---
+
+## Маршрутизация
+
+Основные маршруты приложения:
+
+```text
+/                 Dashboard
+/batches          Production batches
+/warehouses       Warehouses
+/ingredients      Ingredients
+/recipes          Recipes
+```
+
+## Статус проекта
+
+**В разработке.**
+
+Архитектура проекта изначально рассчитана на дальнейшее расширение функциональности и постепенное добавление новых производственных сценариев.
+
+Планируемые направления развития могут включать:
+
+* расширение бизнес-логики производственных операций;
+* более сложные проверки рецептур;
+* контроль расхода ингредиентов;
+* расширенное управление партиями;
+* полноценную серверную часть и базу данных;
+* аутентификацию и разграничение доступа;
+* журналирование операций.
