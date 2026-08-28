@@ -10,7 +10,7 @@ import { setBatches } from '@entities/batch/models/batchSlice';
 export default function AppInitializer() {
     const dispatch = useDispatch();
     useEffect(() => {
-        fetch('/db.json')
+        fetch(`${import.meta.env.BASE_URL}db.json`)
             .then((r) => r.json())
             .then((data) => {
                 const warehouses = data.find((t: any) => t.name === 'warehouse')?.data ?? [];
@@ -52,7 +52,7 @@ export default function AppInitializer() {
                     ),
                 );
 
-                const batches = data.find((table: any) => table.name === 'batch').data;
+                const batches = data.find((table: any) => table.name === 'batch')?.data ?? [];
 
                 dispatch(
                     setBatches(
