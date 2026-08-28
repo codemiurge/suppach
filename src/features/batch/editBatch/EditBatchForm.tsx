@@ -11,7 +11,7 @@ import {
 
 import type { RootState } from '@app/store';
 
-import './editBatchForm.scss';
+import './EditBatchForm.scss';
 
 interface Props {
     batch: Batch;

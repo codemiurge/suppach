@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addBatch, BATCH_STATUSES, type BatchStatus } from '@entities/batch/models/batchSlice';
 
 import type { RootState } from '@app/store';
-import './createBatchForm.scss';
+import './CreateBatchForm.scss';
 
 interface Props {
     onClose: () => void;
